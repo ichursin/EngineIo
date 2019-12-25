@@ -50,91 +50,46 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
             new Data(0x010FFF, "\uDBFF\uDFFF", "\u00F4\u008F\u00BF\u00BF"),
         };
 
-        //
         [Fact]
-        public void EncodeAndDecode()
+        public void ShouldCorrectEncode()
         {
             foreach (var data in DATA)
             {
-                data.Test();
+                Assert.Equal(data.Encoded, UTF8.Encode(data.Decoded));
             }
         }
 
+        [Fact]
+        public void ShouldCorrectDecode()
+        {
+            foreach (var data in DATA)
+            {
+                Assert.Equal(data.Decoded, UTF8.Decode(data.Encoded));
+            }
 
+            Assert.Throws<UTF8Exception>(delegate { UTF8.Decode("\uFFFF"); });
+            Assert.Throws<UTF8Exception>(delegate { UTF8.Decode("\xE9\x00\x00"); });
+            Assert.Throws<UTF8Exception>(delegate { UTF8.Decode("\xC2\uFFFF"); });
+            Assert.Throws<UTF8Exception>(delegate { UTF8.Decode("\xF0\x9D"); });
+        }
 
         private class Data
         {
-            private readonly int _codePoint = -1;
-            private String Description { get; set; }
-            private String Decoded { get; set; }
-            private String Encoded { get; set; }
+            public string Description { get; }
+            public string Decoded { get; }
+            public string Encoded { get; }
 
-            public Data(int codePoint, String decoded, String encoded)
+            public Data(int codePoint, string decoded, string encoded)
+                : this ("U+" + codePoint.ToString("X4").ToUpper(), decoded, encoded)
             {
-                this._codePoint = codePoint;
-                this.Decoded = decoded;
-                this.Encoded = encoded;
             }
 
-            public Data(String description, String decoded, String encoded)
+            public Data(string description, string decoded, string encoded)
             {
-                this.Description = description;
-                this.Decoded = decoded;
-                this.Encoded = encoded;
-            }
-
-            public void Test()
-            {
-                EncodingTest();
-                DecodingTest();
-                ExceptionTest();
-            }
-
-            private void EncodingTest()
-            {
-                var value = UTF8.Encode(Decoded);
-                Assert.Equal(Encoded, value);
-            }
-
-            private void DecodingTest()
-            {
-                Assert.Equal(Decoded, UTF8.Decode(Encoded));
-            }
-
-            private void ExceptionTest()
-            {
-                Assert.Throws<UTF8Exception>(
-                    delegate
-                    {
-                        UTF8.Decode("\uFFFF");
-                    });
-
-                Assert.Throws<UTF8Exception>(
-                    delegate
-                    {
-                        UTF8.Decode("\xE9\x00\x00");
-                    });
-
-                Assert.Throws<UTF8Exception>(
-                    delegate
-                    {
-                        UTF8.Decode("\xC2\uFFFF");
-                    });
-
-                Assert.Throws<UTF8Exception>(
-                    delegate
-                    {
-                        UTF8.Decode("\xF0\x9D");
-                    });
-
-            }
-
-
-            private string Reason
-            {
-                get { return Description ?? "U+" + _codePoint.ToString("X4").ToUpper(); }
+                Description = description;
+                Decoded = decoded;
+                Encoded = encoded;
             }
         }
-
     }
 }
