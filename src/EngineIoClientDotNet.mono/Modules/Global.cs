@@ -35,7 +35,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
                 path = "EngineIoClientDotNet";
             }
 
-            return string.Format("{0}-{1}:{2}#{3}",path, fileName, caller, number);
+            return string.Format("{0}-{1}:{2}#{3}", path, fileName, caller, number);
         }
 
         //from http://stackoverflow.com/questions/8767103/how-to-remove-invalid-code-points-from-a-string

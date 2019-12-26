@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Client.Transports;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -106,7 +105,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         public Socket(string uri, Options options)
             : this(uri == null ? null : String2Uri(uri), options)
         {
-            
+
         }
 
         private static Uri String2Uri(string uri)
@@ -148,7 +147,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 foreach (var item in options.Query)
                 {
-                    Query.Add(item.Key,item.Value);
+                    Query.Add(item.Key, item.Value);
                 }
             }
 
@@ -183,7 +182,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             ReadyState = ReadyStateEnum.OPENING;
             var transport = CreateTransport(transportName);
             SetTransport(transport);
-//            EventTasks.Exec((n) =>
+            //            EventTasks.Exec((n) =>
             Task.Run(() =>
             {
                 var log2 = LogManager.GetLogger(Global.CallerName());
@@ -385,7 +384,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 return opts;
             }
 
-    
+
         }
 
 
@@ -424,7 +423,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 WriteBuffer = WriteBuffer.Clear();
                 CallbackBuffer = CallbackBuffer.Clear();
             }
-           
+
 
             this.PrevBufferLen = 0;
             //log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
@@ -443,7 +442,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
-            log.Info(string.Format("ReadyState={0} Transport.Writeable={1} Upgrading={2} WriteBuffer.Count={3}",ReadyState,Transport.Writable,Upgrading, WriteBuffer.Count));
+            log.Info(string.Format("ReadyState={0} Transport.Writeable={1} Upgrading={2} WriteBuffer.Count={3}", ReadyState, Transport.Writable, Upgrading, WriteBuffer.Count));
             if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
                 log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
@@ -679,7 +678,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 sw.Stop();
             }
-            
+
             return tcs.Task;
         }
 
@@ -810,8 +809,8 @@ namespace Quobject.EngineIoClientDotNet.Client
                     }
                     var log = LogManager.GetLogger(Global.CallerName());
 
-                    var msg = (Packet) args[0];
-                    if (Packet.PONG == msg.Type && "probe" == (string) msg.Data)
+                    var msg = (Packet)args[0];
+                    if (Packet.PONG == msg.Type && "probe" == (string)msg.Data)
                     {
                         //log.Info(
                         //    string.Format("probe transport '{0}' pong",
@@ -826,7 +825,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                         //log.Info(
                         //    string.Format("pausing current transport '{0}'",
                         //        _onTransportOpenListener.Parameters.Socket.Transport.Name));
-                        ((Polling) _onTransportOpenListener.Parameters.Socket.Transport).Pause(
+                        ((Polling)_onTransportOpenListener.Parameters.Socket.Transport).Pause(
                             () =>
                             {
                                 if (_onTransportOpenListener.Parameters.Failed[0])
@@ -866,7 +865,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                                 }
                                 catch (Exception e)
                                 {
-                                    log.Error("",e);
+                                    log.Error("", e);
                                 }
 
                             });
@@ -1085,7 +1084,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
             {
                 var log = LogManager.GetLogger(Global.CallerName());
-                log.Info("Start");                
+                log.Info("Start");
                 this.OnClose("forced close");
 
                 log.Info("socket closing - telling transport to close");
@@ -1112,7 +1111,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 {
                     this.PingTimeoutTimer.Stop();
                 }
-                
+
 
                 //WriteBuffer = WriteBuffer.Clear();
                 //CallbackBuffer = CallbackBuffer.Clear();
@@ -1125,7 +1124,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                     PrevBufferLen = 0;
                 }, 1);
 
-              
+
                 if (this.Transport != null)
                 {
                     // stop event from firing again for transport
@@ -1188,7 +1187,7 @@ namespace Quobject.EngineIoClientDotNet.Client
                 }
                 OnClose("ping timeout");
                 log2.Info("EasyTimer OnHeartbeat finish");
-            },(int) timeout);
+            }, (int)timeout);
 
         }
 
@@ -1206,7 +1205,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 _errorCount++;
                 Emit(EVENT_ERROR, exception);
-                OnClose("transport error", exception);                
+                OnClose("transport error", exception);
             }
         }
 

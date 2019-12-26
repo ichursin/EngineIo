@@ -59,7 +59,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
                 var data = (string)d;
-              //log.Info("EVENT_MESSAGE data = " + data);
+                //log.Info("EVENT_MESSAGE data = " + data);
                 events.Enqueue(data);
                 if (events.Count > 1)
                 {
@@ -87,7 +87,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.On(Socket.EVENT_HANDSHAKE, (data) =>
             {
-              //log.Info(Socket.EVENT_HANDSHAKE + string.Format(" data = {0}", data));
+                //log.Info(Socket.EVENT_HANDSHAKE + string.Format(" data = {0}", data));
                 handshake_data = data as HandshakeData;
                 _manualResetEvent.Set();
             });
@@ -115,7 +115,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             public void Call(params object[] args)
             {
-              //log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
+                //log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
                 serverConnectionTest._manualResetEvent.Set();
             }
@@ -161,12 +161,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.On(Socket.EVENT_UPGRADING, (data) =>
             {
-              //log.Info(Socket.EVENT_UPGRADING + string.Format(" data = {0}", data));
+                //log.Info(Socket.EVENT_UPGRADING + string.Format(" data = {0}", data));
                 events.Enqueue(data);
             });
             socket.On(Socket.EVENT_UPGRADE, (data) =>
             {
-              //log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
+                //log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 events.Enqueue(data);
                 _manualResetEvent.Set();
             });
@@ -199,7 +199,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
-              //log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
+                //log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 var transport = (Transport)data;
                 socket1.Close();
                 if (WebSocket.NAME == transport.Name)
@@ -236,7 +236,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket1.On(Socket.EVENT_UPGRADE, (data) =>
             {
-              //log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
+                //log.Info(Socket.EVENT_UPGRADE + string.Format(" data = {0}", data));
                 var transport = (Transport)data;
                 if (WebSocket.NAME == transport.Name)
                 {
@@ -246,7 +246,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                     var socket2 = new Socket(options);
                     socket2.On(Socket.EVENT_OPEN, () =>
                     {
-                      //log.Info("EVENT_OPEN socket 2");
+                        //log.Info("EVENT_OPEN socket 2");
                         socket2TransportName = socket2.Transport.Name;
                         socket2.Close();
                         _manualResetEvent.Set();

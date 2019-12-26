@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.Modules;
 using System;
 
@@ -28,19 +27,19 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
         /// <param name="eventString">an event name.</param>
         /// <param name="args"></param>
         /// <returns>a reference to this object.</returns>
-        public virtual Emitter Emit(string eventString, params object[] args) 
+        public virtual Emitter Emit(string eventString, params object[] args)
         {
             //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info("Emitter emit event = " + eventString);
             if (this.callbacks.ContainsKey(eventString))
             {
-                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];                
+                ImmutableList<IListener> callbacksLocal = this.callbacks[eventString];
                 foreach (var fn in callbacksLocal)
                 {
                     fn.Call(args);
-                }                    
+                }
             }
-            return this;            
+            return this;
         }
 
         /// <summary>
@@ -187,11 +186,12 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
                     }
                 }
 
-            }catch(Exception)
+            }
+            catch (Exception)
             {
                 this.Off();
             }
-            
+
             return this;
         }
 
@@ -222,7 +222,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
 
     }
 
-    public interface IListener: System.IComparable<IListener>
+    public interface IListener : System.IComparable<IListener>
     {
         int GetId();
         void Call(params object[] args);
@@ -232,7 +232,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
     {
         private static int id_counter = 0;
         private int Id;
-        private readonly Action fn1; 
+        private readonly Action fn1;
         private readonly Action<object> fn;
 
         public ListenerImpl(Action<object> fn)
@@ -262,7 +262,7 @@ namespace Quobject.EngineIoClientDotNet.ComponentEmitter
             }
         }
 
-        
+
 
         public int CompareTo(IListener other)
         {

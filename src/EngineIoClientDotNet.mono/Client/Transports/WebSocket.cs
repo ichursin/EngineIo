@@ -126,7 +126,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 //var log = LogManager.GetLogger(Global.CallerName());
 
                 if (data is string)
-                {                    
+                {
                     webSocket.ws.Send((string)data);
                 }
                 else if (data is byte[])
@@ -154,7 +154,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             if (ws != null)
             {
-          
+
                 try
                 {
                     ws.Close();

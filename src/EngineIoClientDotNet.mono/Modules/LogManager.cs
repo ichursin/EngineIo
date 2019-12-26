@@ -16,7 +16,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
         #region Statics
 
         public static void SetupLogManager()
-        {}
+        { }
 
         public static LogManager GetLogger(string type)
         {
@@ -67,7 +67,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
             msg = Global.StripInvalidUnicodeCharacters(msg);
             var msg1 = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")} [{""}] {MyType} - {msg}";
-//            System.Threading.Thread.CurrentThread.ManagedThreadId);
+            //            System.Threading.Thread.CurrentThread.ManagedThreadId);
             LogManager.file.WriteLine(msg1);
 
         }

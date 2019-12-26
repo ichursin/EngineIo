@@ -17,7 +17,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
             _memoryStream.Capacity = length;
             _limit = length;
         }
- 
+
 
         public static ByteBuffer Allocate(int length)
         {
@@ -25,8 +25,8 @@ namespace Quobject.EngineIoClientDotNet.Parser
         }
 
         internal void Put(byte[] buf)
-        {           
-            _memoryStream.Write(buf,0,buf.Length);
+        {
+            _memoryStream.Write(buf, 0, buf.Length);
         }
 
         internal byte[] Array()
@@ -63,7 +63,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
             }
 
             _memoryStream.Position = index;
-            return (byte) _memoryStream.ReadByte();
+            return (byte)_memoryStream.ReadByte();
         }
 
         /// <summary>

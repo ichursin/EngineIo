@@ -21,7 +21,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
         public static string Encode(ImmutableDictionary<string, string> obj)
         {
             var sb = new StringBuilder();
-            foreach (var key in obj.Keys.OrderBy(x=>x))
+            foreach (var key in obj.Keys.OrderBy(x => x))
             {
                 if (sb.Length > 0)
                 {

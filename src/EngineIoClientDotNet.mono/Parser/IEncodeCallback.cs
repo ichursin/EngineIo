@@ -5,5 +5,4 @@ namespace Quobject.EngineIoClientDotNet.Parser
     {
         void Call(object data);
     }
-
 }

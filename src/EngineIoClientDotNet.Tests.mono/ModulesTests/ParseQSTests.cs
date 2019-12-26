@@ -33,15 +33,15 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
 
             Dictionary<string, string> obj;
 
-            obj = new Dictionary<string, string> {{"a", "b"}};
+            obj = new Dictionary<string, string> { { "a", "b" } };
             var imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal("a=b", ParseQS.Encode(imObj));
 
-            obj = new Dictionary<string, string> {{"a", "b"}, {"c", "d"}};
+            obj = new Dictionary<string, string> { { "a", "b" }, { "c", "d" } };
             imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal("a=b&c=d", ParseQS.Encode(imObj));
 
-            obj = new Dictionary<string, string> {{"a", "b"}, {"c", "tobi rocks"}};
+            obj = new Dictionary<string, string> { { "a", "b" }, { "c", "tobi rocks" } };
             imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal("a=b&c=tobi%20rocks", ParseQS.Encode(imObj));
 

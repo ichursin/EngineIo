@@ -32,7 +32,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void DecodeInvalidUTF8()
         {
-
             Packet p = Parser.DecodePacket("4\uffff", true);
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
@@ -41,7 +40,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
 
         public class DecodePayloadBadFormat_DecodeCallback : IDecodePayloadCallback
         {
-
             public bool Call(Packet packet, int index, int total)
             {
                 var isLast = index + 1 == total;
@@ -75,8 +73,5 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             Packet.DecodePayload("2:4\uffff", new DecodePayloadBadFormat_DecodeCallback());
         }
-
-
-
     }
 }

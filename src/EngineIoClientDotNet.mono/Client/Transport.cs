@@ -1,5 +1,4 @@
-﻿
-using System.Text;
+﻿using System.Text;
 using System.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
@@ -32,15 +31,16 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         protected static int Timestamps = 0;
 
-        private bool _writeable ;
-        public bool Writable {
-            get { return _writeable; } 
+        private bool _writeable;
+        public bool Writable
+        {
+            get { return _writeable; }
             set
             {
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info(string.Format("Writable: {0} sid={1}", value, this.Socket.Id));
                 _writeable = value;
-            } 
+            }
         }
 
         private int myVar;
@@ -50,7 +50,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             get { return myVar; }
             set { myVar = value; }
         }
-        
+
         public string Name;
         public Dictionary<string, string> Query;
 
@@ -154,7 +154,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 //PollTasks.Exec((n) =>
                 //{
-                    Write(packets);
+                Write(packets);
                 //});
             }
             else

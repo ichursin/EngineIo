@@ -1,5 +1,4 @@
 ﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,7 +82,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             emitter.Emit("bar", 1);
             emitter.Emit("foo", 2);
 
-            var expected = new Object[] {"one", 1, "two", 1, "one", 2, "two", 2};
+            var expected = new Object[] { "one", 1, "two", 1, "one", 2, "two", 2 };
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -105,7 +104,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             emitter.Emit("foo", 3);
             emitter.Emit("bar", 1);
 
-            var expected = new Object[] {"one", 1};
+            var expected = new Object[] { "one", 1 };
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -181,7 +180,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             emitter.Emit("foo");
 
-            var expected = new Object[] {"one"};
+            var expected = new Object[] { "one" };
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -202,7 +201,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             emitter.Emit("foo");
 
-            var expected = new Object[] {};
+            var expected = new Object[] { };
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -269,7 +268,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
 
             var emitter = new Emitter();
-            var called = new List<bool> {false};
+            var called = new List<bool> { false };
 
 
             var listener5 = new TestListener5(called);
@@ -306,7 +305,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             emitter.Emit("foo");
             emitter.Emit("foo");
 
-            var expected = new Object[] {};
+            var expected = new Object[] { };
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -339,7 +338,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             emitter.Emit("bar");
 
 
-            var expected = new Object[] {"one", "two"};
+            var expected = new Object[] { "one", "two" };
             Assert.Equal(expected, calls.ToArray());
         }
 
@@ -355,7 +354,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             var listener3 = new TestListener3(calls);
             emitter.On("foo", listener3);
-            var expected = new IListener[] {listener3};
+            var expected = new IListener[] { listener3 };
             Assert.Equal(expected, emitter.Listeners("foo").ToArray());
         }
 
@@ -364,7 +363,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         {
 
             var emitter = new Emitter();
-            var expected = new IListener[] {};
+            var expected = new IListener[] { };
             Assert.Equal(expected, emitter.Listeners("foo").ToArray());
         }
 

@@ -1,5 +1,4 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Parser;
+﻿using Quobject.EngineIoClientDotNet.Parser;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Xunit;
@@ -38,7 +37,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
 
             foreach (var test in testList)
             {
-                Parser.EncodePacket(test.GetPacket(), (IEncodeCallback) test);
+                Parser.EncodePacket(test.GetPacket(), (IEncodeCallback)test);
             }
         }
 
@@ -61,7 +60,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Assert.IsType<Packet>(Parser.DecodePacket((string) data));
+                Assert.IsType<Packet>(Parser.DecodePacket((string)data));
             }
 
             public Packet GetPacket()
@@ -75,7 +74,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.MESSAGE, p.Type);
                 Assert.Null(p.Data);
             }
@@ -92,7 +91,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
 
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.OPEN, p.Type);
                 Assert.Equal(Json, p.Data);
             }
@@ -107,7 +106,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.CLOSE, p.Type);
             }
 
@@ -121,7 +120,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.PING, p.Type);
                 Assert.Equal("1", p.Data);
             }
@@ -136,7 +135,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.PONG, p.Type);
                 Assert.Equal("1", p.Data);
             }
@@ -151,7 +150,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.MESSAGE, p.Type);
                 Assert.Equal("aaa", p.Data);
             }
@@ -166,7 +165,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.MESSAGE, p.Type);
                 Assert.Equal("utf8 â€” string", p.Data);
             }
@@ -181,7 +180,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string) data);
+                Packet p = Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.UPGRADE, p.Type);
             }
 
@@ -236,7 +235,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodePayloads()
         {
-            var packets = new Packet[] {new Packet(Packet.PING), new Packet(Packet.PONG),};
+            var packets = new Packet[] { new Packet(Packet.PING), new Packet(Packet.PONG), };
             Parser.EncodePayload(packets, new EncodePayloadsCallback());
 
         }
@@ -246,7 +245,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[]) data, new EncodeAndDecodePayloads_DecodeCallback());
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback());
             }
 
             public class EncodeAndDecodePayloads_DecodeCallback : IDecodePayloadCallback
@@ -265,7 +264,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodePayloads()
         {
-            var packets = new Packet[] {new Packet(Packet.MESSAGE, "a"),};
+            var packets = new Packet[] { new Packet(Packet.MESSAGE, "a"), };
             Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback());
 
         }
@@ -274,7 +273,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[]) data, new EncodeAndDecodePayloads_DecodeCallback2());
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback2());
             }
 
             public class EncodeAndDecodePayloads_DecodeCallback2 : IDecodePayloadCallback
@@ -293,7 +292,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodePayloads2()
         {
-            var packets = new Packet[] {new Packet(Packet.MESSAGE, "a"), new Packet(Packet.PING),};
+            var packets = new Packet[] { new Packet(Packet.MESSAGE, "a"), new Packet(Packet.PING), };
             Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback2());
 
         }
@@ -302,7 +301,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[]) data, new EncodeAndDecodeEmptyPayloads_DecodeCallback());
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodeEmptyPayloads_DecodeCallback());
             }
 
             public class EncodeAndDecodeEmptyPayloads_DecodeCallback : IDecodePayloadCallback
@@ -322,7 +321,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodeEmptyPayloads()
         {
-            var packets = new Packet[] {};
+            var packets = new Packet[] { };
             Parser.EncodePayload(packets, new EncodeAndDecodeEmptyPayloads_EncodeCallback());
 
         }
@@ -332,7 +331,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[]) data, new EncodeAndDecodeBinaryContents_DecodeCallback());
+                Parser.DecodePayload((byte[])data, new EncodeAndDecodeBinaryContents_DecodeCallback());
             }
 
             public class EncodeAndDecodeBinaryContents_DecodeCallback : IDecodePayloadCallback
@@ -373,7 +372,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             var secondBuffer = new byte[4];
             for (int i = 0; i < secondBuffer.Length; i++)
             {
-                secondBuffer[i] = (byte) (5 + i);
+                secondBuffer[i] = (byte)(5 + i);
             }
             return secondBuffer;
         }
@@ -383,7 +382,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             var firstBuffer = new byte[5];
             for (int i = 0; i < firstBuffer.Length; i++)
             {
-                firstBuffer[i] = (byte) i;
+                firstBuffer[i] = (byte)i;
             }
             return firstBuffer;
         }
@@ -393,7 +392,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             var result = new byte[123];
             for (int i = 0; i < result.Length; i++)
             {
-                result[i] = (byte) i;
+                result[i] = (byte)i;
             }
             return result;
         }
@@ -404,7 +403,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
 
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[]) data, new EncodeMixedBinaryAndStringContents_DecodeCallback());
+                Parser.DecodePayload((byte[])data, new EncodeMixedBinaryAndStringContents_DecodeCallback());
             }
 
             public class EncodeMixedBinaryAndStringContents_DecodeCallback : IDecodePayloadCallback

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,7 +6,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
 {
     public class EasyTimer
     {
-        private CancellationTokenSource ts;    
+        private CancellationTokenSource ts;
 
         public EasyTimer(CancellationTokenSource ts)
         {
@@ -18,7 +17,7 @@ namespace Quobject.EngineIoClientDotNet.Thread
         {
             var ts = new CancellationTokenSource();
             CancellationToken ct = ts.Token;
-            var task = Task.Delay(delayInMilliseconds,ct);
+            var task = Task.Delay(delayInMilliseconds, ct);
             var awaiter = task.GetAwaiter();
 
             awaiter.OnCompleted(
@@ -28,9 +27,9 @@ namespace Quobject.EngineIoClientDotNet.Thread
                     {
                         method();
                     }
-            });
-           
-            
+                });
+
+
             // Returns a stop handle which can be used for stopping
             // the timer, if required
             return new EasyTimer(ts);
@@ -42,8 +41,8 @@ namespace Quobject.EngineIoClientDotNet.Thread
             //log.Info("EasyTimer stop");
             if (ts != null)
             {
-                ts.Cancel();                
-            }           
+                ts.Cancel();
+            }
         }
 
 

@@ -30,13 +30,13 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
         private static readonly Dictionary<string, byte> _packets = new Dictionary<string, byte>()
         {
-            {Packet.OPEN, 0},
-            {Packet.CLOSE, 1},
-            {Packet.PING, 2},
-            {Packet.PONG, 3},
-            {Packet.MESSAGE, 4},
-            {Packet.UPGRADE, 5},
-            {Packet.NOOP, 6}
+            {OPEN, 0},
+            {CLOSE, 1},
+            {PING, 2},
+            {PONG, 3},
+            {MESSAGE, 4},
+            {UPGRADE, 5},
+            {NOOP, 6}
         };
 
         private static readonly Dictionary<byte, string> _packetsList = new Dictionary<byte, string>();
@@ -45,15 +45,15 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             foreach (var entry in _packets)
             {
-                _packetsList.Add(entry.Value,entry.Key);
+                _packetsList.Add(entry.Value, entry.Key);
             }
         }
 
-        private static readonly Packet _err = new Packet(Packet.ERROR,"parser error");
+        private static readonly Packet _err = new Packet(Packet.ERROR, "parser error");
 
         public string Type { get; set; }
         public object Data { get; set; }
-       
+
 
         public Packet(string type, object data)
         {
@@ -67,9 +67,9 @@ namespace Quobject.EngineIoClientDotNet.Parser
             this.Data = null;
         }
 
-        internal void Encode(IEncodeCallback callback,bool utf8encode = false)
+        internal void Encode(IEncodeCallback callback, bool utf8encode = false)
         {
-            if ( Data is byte[])
+            if (Data is byte[])
             {
                 if (!SupportsBinary)
                 {
@@ -84,7 +84,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
             if (Data != null)
             {
-                encodedStringBuilder.Append( utf8encode ? UTF8.Encode((string) Data): (string)Data);
+                encodedStringBuilder.Append(utf8encode ? UTF8.Encode((string)Data) : (string)Data);
             }
 
             callback.Call(encodedStringBuilder.ToString());
@@ -142,7 +142,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 {
 
                     return _err;
-                }                
+                }
             }
 
             if (type < 0 || type >= _packetsList.Count)
@@ -152,9 +152,9 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
             if (data.Length > 1)
             {
-                return new Packet(_packetsList[(byte) type], data.Substring(1));
+                return new Packet(_packetsList[(byte)type], data.Substring(1));
             }
-            return new Packet(_packetsList[(byte) type], null);
+            return new Packet(_packetsList[(byte)type], null);
         }
 
         private static Packet DecodeBase64Packet(string msg)
@@ -177,11 +177,9 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             int type = data[0];
             var byteArray = new byte[data.Length - 1];
-            Array.Copy(data,1,byteArray,0, byteArray.Length);
+            Array.Copy(data, 1, byteArray, 0, byteArray.Length);
             return new Packet(_packetsList[(byte)type], byteArray);
         }
-
-
 
         internal static void EncodePayload(Packet[] packets, IEncodeCallback callback)
         {
@@ -208,7 +206,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
         /// <param name="callback"></param>
         public static void DecodePayload(string data, IDecodePayloadCallback callback)
         {
-            if (String.IsNullOrEmpty(data))
+            if (string.IsNullOrEmpty(data))
             {
                 callback.Call(_err, 0, 1);
                 return;
@@ -285,7 +283,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 var strLen = new StringBuilder();
                 var isString = (bufferTail.Get(0 + bufferTail_offset) & 0xFF) == 0;
                 var numberTooLong = false;
-                for (int i = 1;; i++)
+                for (int i = 1; ; i++)
                 {
                     int b = bufferTail.Get(i + bufferTail_offset) & 0xFF;
                     if (b == 255)
@@ -313,7 +311,7 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 bufferTail.Limit(msgLength + 1 + bufferTail_offset);
                 var msg = new byte[bufferTail.Remaining()];
                 bufferTail.Get(msg, 0, msg.Length);
-                
+
                 if (isString)
                 {
                     buffers.Add(ByteArrayToString(msg));
@@ -333,11 +331,11 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 var buffer = buffers[i];
                 if (buffer is string)
                 {
-                    callback.Call(DecodePacket((string) buffer, true), i, total);
+                    callback.Call(DecodePacket((string)buffer, true), i, total);
                 }
                 else if (buffer is byte[])
                 {
-                    callback.Call(DecodePacket((byte[])buffer), i, total);                    
+                    callback.Call(DecodePacket((byte[])buffer), i, total);
                 }
             }
 
@@ -375,20 +373,20 @@ namespace Quobject.EngineIoClientDotNet.Parser
             {
                 if (data is string)
                 {
-                    var packet = (string) data;
+                    var packet = (string)data;
                     var encodingLength = packet.Length.ToString();
                     var sizeBuffer = new byte[encodingLength.Length + 2];
-                    sizeBuffer[0] = (byte) 0; // is a string
+                    sizeBuffer[0] = (byte)0; // is a string
                     for (var i = 0; i < encodingLength.Length; i++)
                     {
-                        sizeBuffer[i + 1] = byte.Parse(encodingLength.Substring(i,1));
+                        sizeBuffer[i + 1] = byte.Parse(encodingLength.Substring(i, 1));
                     }
-                    sizeBuffer[sizeBuffer.Length - 1] = (byte) 255;
+                    sizeBuffer[sizeBuffer.Length - 1] = (byte)255;
                     _results.Add(Buffer.Concat(new byte[][] { sizeBuffer, StringToByteArray(packet) }));
                     return;
                 }
 
-                var packet1 = (byte[]) data;
+                var packet1 = (byte[])data;
                 var encodingLength1 = packet1.Length.ToString();
                 var sizeBuffer1 = new byte[encodingLength1.Length + 2];
                 sizeBuffer1[0] = (byte)1; // is binary

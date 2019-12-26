@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
 using Quobject.EngineIoClientDotNet.Modules;
 using Quobject.EngineIoClientDotNet.Parser;
@@ -42,7 +41,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             if (IsPolling || !Writable)
             {
-                var total = new[] {0};
+                var total = new[] { 0 };
 
 
                 if (IsPolling)
@@ -117,7 +116,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 this.total = total;
                 this.pause = pause;
             }
-            
+
             public void Call(params object[] args)
             {
                 //var log = LogManager.GetLogger(Global.CallerName());
@@ -197,7 +196,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
 
-            log.Info(string.Format("polling got data {0}",data));
+            log.Info(string.Format("polling got data {0}", data));
             var callback = new DecodePayloadCallback(this);
             if (data is string)
             {
@@ -205,7 +204,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             }
             else if (data is byte[])
             {
-                Parser.Parser.DecodePayload((byte[])data, callback);                
+                Parser.Parser.DecodePayload((byte[])data, callback);
             }
 
             if (ReadyState != ReadyStateEnum.CLOSED)
@@ -220,7 +219,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
                 else
                 {
-                    log.Info(string.Format("ignoring poll - transport state {0}", ReadyState));                    
+                    log.Info(string.Format("ignoring poll - transport state {0}", ReadyState));
                 }
             }
 
@@ -263,7 +262,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             var closeListener = new CloseListener(this);
 
             if (ReadyState == ReadyStateEnum.OPEN)
-            {                      
+            {
                 log.Info("transport open - closing");
                 closeListener.Call();
             }
@@ -291,7 +290,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 //var log = LogManager.GetLogger(Global.CallerName());
                 //log.Info("SendEncodeCallback data = " + data);
 
-                var byteData = (byte[]) data;
+                var byteData = (byte[])data;
                 polling.DoWrite(byteData, () =>
                 {
                     polling.Writable = true;
@@ -351,12 +350,12 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         protected virtual void DoWrite(byte[] data, Action action)
         {
-            
+
         }
 
         protected virtual void DoPoll()
         {
-            
+
         }
 
 

@@ -28,19 +28,19 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.On(Socket.EVENT_OPEN, () =>
             {
-              //log.Info(Socket.EVENT_OPEN);
+                //log.Info(Socket.EVENT_OPEN);
             });
 
             socket.On(Socket.EVENT_UPGRADE, () =>
             {
-              //log.Info(Socket.EVENT_UPGRADE);
+                //log.Info(Socket.EVENT_UPGRADE);
                 socket.Send(binaryData);
             });
 
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
                 var data = d as string;
-              //log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+                //log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
 
                 if (data == "hi")
                 {
@@ -53,7 +53,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Open();
             _manualResetEvent.WaitOne();
             socket.Close();
-          //log.Info("ReceiveBinaryData end");
+            //log.Info("ReceiveBinaryData end");
 
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
@@ -89,7 +89,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
             socket.On(Socket.EVENT_UPGRADE, () =>
             {
-              //log.Info(Socket.EVENT_UPGRADE);
+                //log.Info(Socket.EVENT_UPGRADE);
                 socket.Send(binaryData);
                 socket.Send(stringData);
             });
@@ -97,7 +97,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.On(Socket.EVENT_MESSAGE, (d) =>
             {
                 var data = d as string;
-              //log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+                //log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
 
                 if (data == "hi")
                 {
@@ -124,7 +124,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             Assert.Equal(binaryData, result);
             events.TryDequeue(out result);
             Assert.Equal(stringData, (string)result);
-          //log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
+            //log.Info("ReceiveBinaryDataAndMultibyteUTF8String end");
         }
     }
 }

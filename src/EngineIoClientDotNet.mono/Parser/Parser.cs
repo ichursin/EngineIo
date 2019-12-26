@@ -1,5 +1,4 @@
-﻿
-namespace Quobject.EngineIoClientDotNet.Parser
+﻿namespace Quobject.EngineIoClientDotNet.Parser
 {
     /// <remarks>
     /// This is the JavaScript parser for the engine.io protocol encoding, 
@@ -7,10 +6,8 @@ namespace Quobject.EngineIoClientDotNet.Parser
     /// <see href="https://github.com/Automattic/engine.io-parser">https://github.com/Automattic/engine.io-parser</see>
     /// </remarks>
     public class Parser
-    {        
-
+    {
         public static readonly int Protocol = 3;
-
 
         private Parser()
         {
@@ -36,7 +33,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
             Packet.EncodePayload(packets, callback);
         }
 
-
         public static void DecodePayload(string data, IDecodePayloadCallback callback)
         {
             Packet.DecodePayload(data, callback);
@@ -46,6 +42,5 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             Packet.DecodePayload(data, callback);
         }
-
     }
 }

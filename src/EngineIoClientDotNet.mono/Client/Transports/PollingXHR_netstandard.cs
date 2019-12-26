@@ -2,9 +2,7 @@
 using Quobject.EngineIoClientDotNet.Modules;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
@@ -257,7 +255,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 var httpMethod = Method == "POST" ? HttpMethod.Post : HttpMethod.Get;
                 var dataToSend = Data == null ? Encoding.UTF8.GetBytes("") : Data;
 
-                Task.Run(async() =>
+                Task.Run(async () =>
                 {
                     try
                     {
@@ -325,8 +323,8 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
                 }).Wait();
 
-                   
-            }       
+
+            }
 
             private void OnSuccess()
             {

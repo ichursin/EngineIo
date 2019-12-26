@@ -1,5 +1,4 @@
 ﻿using Quobject.EngineIoClientDotNet.Modules;
-using System;
 using Xunit;
 
 
@@ -80,7 +79,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
             public string Encoded { get; }
 
             public Data(int codePoint, string decoded, string encoded)
-                : this ("U+" + codePoint.ToString("X4").ToUpper(), decoded, encoded)
+                : this($"U+{codePoint.ToString("X4").ToUpper()}", decoded, encoded)
             {
             }
 

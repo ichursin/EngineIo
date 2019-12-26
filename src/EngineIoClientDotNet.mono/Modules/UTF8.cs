@@ -138,28 +138,28 @@ namespace Quobject.EngineIoClientDotNet.Modules
             if ((codePoint & 0xFFFFFF80) == 0)
             {
                 // 1-byte sequence
-                sb.Append((char) codePoint);
+                sb.Append((char)codePoint);
                 return sb.ToString();
             }
             if ((codePoint & 0xFFFFF800) == 0)
             {
                 // 2-byte sequence
-                sb.Append((char) (((codePoint >> 6) & 0x1F) | 0xC0));
+                sb.Append((char)(((codePoint >> 6) & 0x1F) | 0xC0));
             }
             else if ((codePoint & 0xFFFF0000) == 0)
             {
                 // 3-byte sequence
-                sb.Append((char) (((codePoint >> 12) & 0x0F) | 0xE0));
-                sb.Append( CreateByte(codePoint, 6));
+                sb.Append((char)(((codePoint >> 12) & 0x0F) | 0xE0));
+                sb.Append(CreateByte(codePoint, 6));
             }
             else if ((codePoint & 0xFFE00000) == 0)
             {
                 // 4-byte sequence
-                sb.Append((char) (((codePoint >> 18) & 0x07) | 0xF0));
-                sb.Append( CreateByte(codePoint, 12));
-                sb.Append( CreateByte(codePoint, 6));
+                sb.Append((char)(((codePoint >> 18) & 0x07) | 0xF0));
+                sb.Append(CreateByte(codePoint, 12));
+                sb.Append(CreateByte(codePoint, 6));
             }
-            sb.Append((char) ((codePoint & 0x3F) | 0x80));
+            sb.Append((char)((codePoint & 0x3F) | 0x80));
             return sb.ToString();
         }
 
