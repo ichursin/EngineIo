@@ -61,8 +61,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 binaryData2[i] = (byte)(i + 1);
             }
 
-            object result;
-            events.TryDequeue(out result);
+            events.TryDequeue(out object result);
             Assert.Equal(binaryData, result);
         }
 
@@ -121,8 +120,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
                 binaryData2[i] = (byte)(i + 1);
             }
 
-            object result;
-            events.TryDequeue(out result);
+            events.TryDequeue(out object result);
             Assert.Equal(binaryData, result);
             events.TryDequeue(out result);
             Assert.Equal(stringData, (string)result);

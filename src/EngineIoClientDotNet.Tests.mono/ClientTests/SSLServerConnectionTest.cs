@@ -38,8 +38,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Open();
             _manualResetEvent.WaitOne();
             socket.Close();
-            string result;
-            events.TryDequeue(out result);
+            events.TryDequeue(out string result);
             Assert.Equal(Socket.EVENT_OPEN, result);
             events.TryDequeue(out result);
             Assert.Equal(Socket.EVENT_CLOSE, result);
@@ -71,8 +70,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             _manualResetEvent.WaitOne();
             socket.Close();
 
-            string result;
-            events.TryDequeue(out result);
+            events.TryDequeue(out string result);
             Assert.Equal("hi", result);
             events.TryDequeue(out result);
             Assert.Equal("hello", result);
@@ -176,8 +174,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
             socket.Open();
             _manualResetEvent.WaitOne();
 
-            object test = null;
-            events.TryDequeue(out test);
+            events.TryDequeue(out object test);
             Assert.NotNull(test);
             Assert.IsAssignableFrom<Transport>(test);
 
