@@ -14,7 +14,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger("DecodeTests DecodeBadFormat");
 
-
             Packet p = Parser.DecodePacket(":::");
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
@@ -23,7 +22,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void DecodeInexistingTypes()
         {
-
             Packet p = Parser.DecodePacket("94103");
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
@@ -53,7 +51,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void EncodeAndDecodeEmptyPayloads()
         {
-
             Packet.DecodePayload("1!", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("))", new DecodePayloadBadFormat_DecodeCallback());
@@ -62,7 +59,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         [Fact]
         public void DecodePayloadBadPacketFormat()
         {
-
             Packet.DecodePayload("3:99", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("1:aa", new DecodePayloadBadFormat_DecodeCallback());
             Packet.DecodePayload("1:a2:b", new DecodePayloadBadFormat_DecodeCallback());
@@ -73,5 +69,6 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
         {
             Packet.DecodePayload("2:4\uffff", new DecodePayloadBadFormat_DecodeCallback());
         }
+
     }
 }

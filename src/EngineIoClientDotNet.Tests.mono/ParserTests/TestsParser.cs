@@ -7,7 +7,7 @@ namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
 {
     public class TestsParser
     {
-
+        string Name { get; set; }
         public interface IPacketTest
         {
             Packet GetPacket();

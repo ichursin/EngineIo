@@ -40,7 +40,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        internal static string Encode(System.Collections.Generic.Dictionary<string, string> obj)
+        internal static string Encode(IDictionary<string, string> obj)
         {
             var sb = new StringBuilder();
             foreach (var key in obj.Keys)
@@ -61,7 +61,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
         /// </summary>
         /// <param name="qs"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> Decode(string qs)
+        public static IDictionary<string, string> Decode(string qs)
         {
             var qry = new Dictionary<string, string>();
             var pairs = qs.Split('&');
@@ -73,7 +73,5 @@ namespace Quobject.EngineIoClientDotNet.Modules
             }
             return qry;
         }
-
-
     }
 }
