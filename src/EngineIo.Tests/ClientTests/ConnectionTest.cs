@@ -1,12 +1,12 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Client.Transports;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using EngineIo.Client;
+using EngineIo.Client.Transports;
+using EngineIo.ComponentEmitter;
 using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+namespace EngineIo_Tests.ClientTests
 {
     public class ConnectionTest : Connection
     {

@@ -1,10 +1,10 @@
-﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
+﻿using EngineIo.ComponentEmitter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
+namespace EngineIo_Tests.ComponentEmitterTests
 {
     public class EmitterTests
     {

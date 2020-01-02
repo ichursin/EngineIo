@@ -1,12 +1,12 @@
 ﻿using System.Collections.Immutable;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Parser;
+using EngineIo.ComponentEmitter;
+using EngineIo.Modules;
+using EngineIo.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Quobject.EngineIoClientDotNet.Client.Transports
+namespace EngineIo.Client.Transports
 {
     public class Polling : Transport
     {

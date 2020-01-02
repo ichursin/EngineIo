@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using System.Collections.Immutable;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Parser;
+using EngineIo.ComponentEmitter;
+using EngineIo.Modules;
+using EngineIo.Parser;
 using System;
 using System.Collections.Generic;
 
 
-namespace Quobject.EngineIoClientDotNet.Client
+namespace EngineIo.Client
 {
     public abstract class Transport : Emitter
     {

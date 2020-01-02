@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIo", "EngineIo\EngineIo.csproj", "{A5BEDC19-D3BF-4B34-9228-6D50B433D916}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIo.Tests", "EngineIo.Tests.netstandard1.3\EngineIo.Tests.netstandard1.3.csproj", "{B21BAF12-47BE-4874-83FB-D9918710BD0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIo.Tests", "EngineIo.Tests\EngineIo.Tests.csproj", "{B21BAF12-47BE-4874-83FB-D9918710BD0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

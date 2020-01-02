@@ -1,4 +1,4 @@
-﻿namespace Quobject.EngineIoClientDotNet.Parser
+﻿namespace EngineIo.Parser
 {
     public interface IEncodeCallback
     {

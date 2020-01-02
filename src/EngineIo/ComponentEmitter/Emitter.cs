@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
-using Quobject.EngineIoClientDotNet.Modules;
+using EngineIo.Modules;
 using System;
 
-namespace Quobject.EngineIoClientDotNet.ComponentEmitter
+namespace EngineIo.ComponentEmitter
 {
     /// <remarks>
     /// The event emitter which is ported from the JavaScript module.

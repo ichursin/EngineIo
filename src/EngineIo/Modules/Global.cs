@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-namespace Quobject.EngineIoClientDotNet.Modules
+namespace EngineIo.Modules
 {
     public static class Global
     {

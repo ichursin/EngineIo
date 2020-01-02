@@ -1,8 +1,8 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
+﻿using EngineIo.Client;
 using System;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+namespace EngineIo_Tests.ClientTests
 {
     public class UsageTest : Connection
     {

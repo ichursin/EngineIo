@@ -1,5 +1,5 @@
-﻿using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Modules;
+﻿using EngineIo.ComponentEmitter;
+using EngineIo.Modules;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
 
-namespace Quobject.EngineIoClientDotNet.Client.Transports
+namespace EngineIo.Client.Transports
 {
     public class PollingXHR : Polling
     {

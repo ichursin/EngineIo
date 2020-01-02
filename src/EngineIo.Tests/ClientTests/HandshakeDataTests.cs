@@ -1,7 +1,7 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
+﻿using EngineIo.Client;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+namespace EngineIo_Tests.ClientTests
 {
     public class HandshakeDataTests
     {

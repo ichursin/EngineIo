@@ -1,11 +1,11 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Client.Transports;
+﻿using EngineIo.Client;
+using EngineIo.Client.Transports;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+namespace EngineIo_Tests.ClientTests
 {
     // NOTE: tests for the rememberUpgrade option are on ServerConnectionTest.
 

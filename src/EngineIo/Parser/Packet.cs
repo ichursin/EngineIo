@@ -1,10 +1,10 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
+﻿using EngineIo.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quobject.EngineIoClientDotNet.Parser
+namespace EngineIo.Parser
 {
     /// <remarks>
     /// Packet type which is ported from the JavaScript module.

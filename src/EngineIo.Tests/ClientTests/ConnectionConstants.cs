@@ -1,4 +1,4 @@
-﻿namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+﻿namespace EngineIo_Tests.ClientTests
 {
     public static class ConnectionConstants
     {

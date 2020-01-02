@@ -1,10 +1,10 @@
 ﻿using System.Collections.Immutable;
-using Quobject.EngineIoClientDotNet.Modules;
+using EngineIo.Modules;
 using System.Collections.Generic;
 using Xunit;
 
 
-namespace Quobject.EngineIoClientDotNet_Tests.ModulesTests
+namespace EngineIo_Tests.ModulesTests
 {
     public class ParseQsTests
     {

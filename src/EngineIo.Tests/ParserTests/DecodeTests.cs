@@ -1,8 +1,8 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Parser;
+﻿using EngineIo.Modules;
+using EngineIo.Parser;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
+namespace EngineIo_Tests.ParserTests
 {
     public class DecodeTests
     {

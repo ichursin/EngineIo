@@ -1,11 +1,15 @@
 ﻿using System;
 
-namespace Quobject.EngineIoClientDotNet.Client
+namespace EngineIo.Client
 {
     public class EngineIOException : Exception
     {
         public string Transport;
         public object code;
+
+        public EngineIOException()
+        {
+        }
 
         public EngineIOException(string message)
             : base(message)

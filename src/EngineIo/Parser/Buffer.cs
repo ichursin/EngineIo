@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quobject.EngineIoClientDotNet.Parser
+namespace EngineIo.Parser
 {
     internal static class Buffer
     {

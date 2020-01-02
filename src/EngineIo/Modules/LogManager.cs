@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Quobject.EngineIoClientDotNet.Modules
+namespace EngineIo.Modules
 {
     public class LogManager
     {

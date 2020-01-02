@@ -1,4 +1,4 @@
-﻿namespace Quobject.EngineIoClientDotNet.Modules
+﻿namespace EngineIo.Modules
 {
     public class ServerCertificate
     {

@@ -1,10 +1,10 @@
-﻿using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Parser;
+﻿using EngineIo.Modules;
+using EngineIo.Parser;
 using System;
 using System.Collections.Generic;
 using WebSocket4Net;
 
-namespace Quobject.EngineIoClientDotNet.Client.Transports
+namespace EngineIo.Client.Transports
 {
     public class WebSocket : Transport
     {

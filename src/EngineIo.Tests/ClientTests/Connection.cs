@@ -1,7 +1,7 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
-using Quobject.EngineIoClientDotNet.Modules;
+﻿using EngineIo.Client;
+using EngineIo.Modules;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+namespace EngineIo_Tests.ClientTests
 {
     public class Connection
     {

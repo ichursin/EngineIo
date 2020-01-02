@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Quobject.EngineIoClientDotNet.Thread
+namespace EngineIo.Thread
 {
     public class EasyTimer
     {

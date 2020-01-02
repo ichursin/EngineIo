@@ -1,9 +1,9 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
+﻿using EngineIo.Client;
 using System.Collections.Concurrent;
 using System.Threading;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+namespace EngineIo_Tests.ClientTests
 {
     public class BinaryWebSocketTest : Connection
     {

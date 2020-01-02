@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Quobject.EngineIoClientDotNet.Parser
+namespace EngineIo.Parser
 {
     public class ByteBuffer
     {

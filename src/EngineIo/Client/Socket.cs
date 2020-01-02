@@ -1,15 +1,15 @@
 ﻿using System.Collections.Immutable;
-using Quobject.EngineIoClientDotNet.Client.Transports;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.EngineIoClientDotNet.Modules;
-using Quobject.EngineIoClientDotNet.Parser;
-using Quobject.EngineIoClientDotNet.Thread;
+using EngineIo.Client.Transports;
+using EngineIo.ComponentEmitter;
+using EngineIo.Modules;
+using EngineIo.Parser;
+using EngineIo.Thread;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-namespace Quobject.EngineIoClientDotNet.Client
+namespace EngineIo.Client
 {
     public class Socket : Emitter
     {

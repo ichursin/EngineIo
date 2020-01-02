@@ -1,9 +1,9 @@
-﻿using Quobject.EngineIoClientDotNet.Parser;
+﻿using EngineIo.Parser;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ParserTests
+namespace EngineIo_Tests.ParserTests
 {
     public class TestsParser
     {

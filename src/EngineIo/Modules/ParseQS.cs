@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Quobject.EngineIoClientDotNet.Modules
+namespace EngineIo.Modules
 {
     /// <remarks>
     /// Provides methods for parsing a query string into an object, and vice versa.

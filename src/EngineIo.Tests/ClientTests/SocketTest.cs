@@ -1,9 +1,9 @@
-﻿using Quobject.EngineIoClientDotNet.Client;
+﻿using EngineIo.Client;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
+namespace EngineIo_Tests.ClientTests
 {
     public class SocketTest : Connection
     {

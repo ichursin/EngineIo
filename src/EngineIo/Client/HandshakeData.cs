@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 
 
-namespace Quobject.EngineIoClientDotNet.Client
+namespace EngineIo.Client
 {
     public class HandshakeData
     {
