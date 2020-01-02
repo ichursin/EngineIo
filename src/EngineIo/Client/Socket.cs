@@ -56,7 +56,7 @@ namespace EngineIo.Client
         private string Hostname;
         private string Path;
         private string TimestampParam;
-        private ImmutableList<string> Transports;
+        private IList<string> Transports;
         private ImmutableList<string> Upgrades;
         private IDictionary<string, string> Query;
         private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
@@ -157,7 +157,12 @@ namespace EngineIo.Client
             Path = (options.Path ?? "/engine.io").Replace("/$", "") + "/";
             TimestampParam = (options.TimestampParam ?? "t");
             TimestampRequests = options.TimestampRequests;
-            Transports = options.Transports ?? ImmutableList<string>.Empty.Add(Polling.NAME).Add(WebSocket.NAME);
+
+            Transports = options.Transports
+                ?? ImmutableList<string>.Empty
+                    .Add(Polling.NAME)
+                    .Add(WebSocket.NAME);
+
             PolicyPort = options.PolicyPort != 0 ? options.PolicyPort : 843;
             RememberUpgrade = options.RememberUpgrade;
             Cookies = options.Cookies;
@@ -339,8 +344,7 @@ namespace EngineIo.Client
 
         public class Options : Transport.Options
         {
-
-            public ImmutableList<string> Transports;
+            public IList<string> Transports;
 
             public bool Upgrade = true;
 

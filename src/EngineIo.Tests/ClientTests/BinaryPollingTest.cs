@@ -65,23 +65,20 @@ namespace EngineIo.Tests.ClientTests
         //    Assert.Equal("1", "1");
         //}
 
-        private ManualResetEvent _manualResetEvent = null;
-
         [Fact]
         public void ReceiveBinaryData()
         {
-            _manualResetEvent = new ManualResetEvent(false);
-
+            var manualResetEvent = new ManualResetEvent(false);
             var events = new ConcurrentQueue<object>();
 
             var binaryData = new byte[5];
-            for (int i = 0; i < binaryData.Length; i++)
+            for (byte i = 0; i < binaryData.Length; i++)
             {
-                binaryData[i] = (byte)i;
+                binaryData[i] = i;
             }
 
             var options = CreateOptions();
-            options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            options.Transports = ImmutableList.Create(Polling.NAME);
 
             var socket = new Socket(options);
 
@@ -101,11 +98,11 @@ namespace EngineIo.Tests.ClientTests
                     return;
                 }
                 events.Enqueue(d);
-                _manualResetEvent.Set();
+                manualResetEvent.Set();
             });
 
             socket.Open();
-            _manualResetEvent.WaitOne();
+            manualResetEvent.WaitOne();
             socket.Close();
             //log.Info("ReceiveBinaryData end");
 
@@ -122,45 +119,42 @@ namespace EngineIo.Tests.ClientTests
         [Fact]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
-            _manualResetEvent = new ManualResetEvent(false);
+            var manualResetEvent = new ManualResetEvent(false);
 
             var events = new ConcurrentQueue<object>();
 
-            var binaryData = new byte[5];
-            for (int i = 0; i < binaryData.Length; i++)
-            {
-                binaryData[i] = (byte)i;
-            }
-            const string stringData = "cash money €€€";
+            var stringData = "cash money €€€";
+            var binaryData = new byte[] { 0, 1, 2, 3, 4 };
 
             var options = CreateOptions();
-            options.Transports = ImmutableList.Create<string>(Polling.NAME);
+            options.Transports = ImmutableList.Create(Polling.NAME);
 
             var socket = new Socket(options);
 
             socket.On(Socket.EVENT_OPEN, () =>
             {
-                socket.On(Socket.EVENT_MESSAGE, (d) =>
-                {
-                    var data = d as string;
-                    //log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
-
-                    if (data == "hi")
-                    {
-                        return;
-                    }
-                    events.Enqueue(d);
-                    if (events.Count > 1)
-                    {
-                        _manualResetEvent.Set();
-                    }
-                });
                 socket.Send(binaryData);
                 socket.Send(stringData);
             });
 
+            socket.On(Socket.EVENT_MESSAGE, (d) =>
+            {
+                var data = d as string;
+                //log.Info(string.Format("EVENT_MESSAGE data ={0} d = {1} ", data, d));
+
+                if (data == "hi")
+                {
+                    return;
+                }
+                events.Enqueue(d);
+                if (events.Count > 1)
+                {
+                    manualResetEvent.Set();
+                }
+            });
+
             socket.Open();
-            _manualResetEvent.WaitOne();
+            manualResetEvent.WaitOne();
             socket.Close();
             var binaryData2 = new byte[5];
             for (int i = 0; i < binaryData2.Length; i++)
