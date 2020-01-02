@@ -29,6 +29,7 @@ namespace EngineIo.Client.Transports
             {
                 opts = new XHRRequest.RequestOptions();
             }
+
             opts.Uri = Uri();
 
             var req = new XHRRequest(opts);
@@ -82,18 +83,25 @@ namespace EngineIo.Client.Transports
 
         protected override void DoWrite(byte[] data, Action action)
         {
-            var opts = new XHRRequest.RequestOptions { Method = "POST", Data = data, CookieHeaderValue = Cookie };
+            var opts = new XHRRequest.RequestOptions
+            {
+                Method = "POST",
+                Data = data,
+                CookieHeaderValue = Cookie
+            };
+
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("DoWrite data = " + data);
-            //try
-            //{
-            //    var dataString = BitConverter.ToString(data);
-            //    log.Info(string.Format("DoWrite data {0}", dataString));
-            //}
-            //catch (Exception e)
-            //{
-            //    log.Error(e);
-            //}
+
+            // try
+            // {
+            //     var dataString = BitConverter.ToString(data);
+            //     log.Info(string.Format("DoWrite data {0}", dataString));
+            // }
+            // catch (Exception e)
+            // {
+            //     log.Error(e);
+            // }
 
             sendXhr = Request(opts);
             sendXhr.On(EVENT_SUCCESS, new SendEventSuccessListener(action));
@@ -150,7 +158,7 @@ namespace EngineIo.Client.Transports
             sendXhr = Request(opts);
             sendXhr.On(EVENT_DATA, new DoPollEventDataListener(this));
             sendXhr.On(EVENT_ERROR, new DoPollEventErrorListener(this));
-            //sendXhr.Create();
+            // sendXhr.Create();
             sendXhr.Create();
         }
 
@@ -180,40 +188,37 @@ namespace EngineIo.Client.Transports
             }
 
             public int CompareTo(IListener other)
-            {
-                return Id.CompareTo(other.Id);
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class DoPollEventErrorListener : IListener
         {
-            private PollingXHR pollingXHR;
+            private readonly PollingXHR _pollingXHR;
+
             public int Id { get; } = 0;
 
             public DoPollEventErrorListener(PollingXHR pollingXHR)
             {
-                pollingXHR = pollingXHR;
+                _pollingXHR = pollingXHR;
             }
 
             public void Call(params object[] args)
             {
                 var err = args.Length > 0 && args[0] is Exception ? (Exception)args[0] : null;
-                pollingXHR.OnError("xhr poll error", err);
+                _pollingXHR.OnError("xhr poll error", err);
             }
 
             public int CompareTo(IListener other)
-            {
-                return Id.CompareTo(other.Id);
-            }
+                => Id.CompareTo(other.Id);
         }
 
         public class XHRRequest : Emitter
         {
-            private string Method;
-            private string Uri;
-            private byte[] Data;
-            private string CookieHeaderValue;
-            private Dictionary<string, string> ExtraHeaders;
+            private readonly string Method;
+            private readonly string Uri;
+            private readonly byte[] Data;
+            private readonly string CookieHeaderValue;
+            private readonly IDictionary<string, string> ExtraHeaders;
 
             public XHRRequest(RequestOptions options)
             {
@@ -227,7 +232,7 @@ namespace EngineIo.Client.Transports
             public void Create()
             {
                 var httpMethod = Method == "POST" ? HttpMethod.Post : HttpMethod.Get;
-                var dataToSend = Data == null ? Encoding.UTF8.GetBytes("") : Data;
+                var dataToSend = Data ?? Encoding.UTF8.GetBytes("");
 
                 Task.Run(async () =>
                 {
@@ -296,8 +301,6 @@ namespace EngineIo.Client.Transports
                     }
 
                 }).Wait();
-
-
             }
 
             private void OnSuccess()
@@ -307,16 +310,18 @@ namespace EngineIo.Client.Transports
 
             private void OnData(string data)
             {
-                //var log = LogManager.GetLogger(Global.CallerName());
-                //log.Info("OnData string = " + data);
+                // var log = LogManager.GetLogger(Global.CallerName());
+                // log.Info("OnData string = " + data);
+
                 Emit(EVENT_DATA, data);
                 OnSuccess();
             }
 
             private void OnData(byte[] data)
             {
-                //var log = LogManager.GetLogger(Global.CallerName());
-                //log.Info(string.Format("OnData byte[] ={0}", System.Text.Encoding.UTF8.GetString(data, 0, data.Length)));
+                // var log = LogManager.GetLogger(Global.CallerName());
+                // log.Info(string.Format("OnData byte[] ={0}", System.Text.Encoding.UTF8.GetString(data, 0, data.Length)));
+
                 Emit(EVENT_DATA, data);
                 OnSuccess();
             }

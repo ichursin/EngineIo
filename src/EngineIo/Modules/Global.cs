@@ -38,7 +38,7 @@ namespace EngineIo.Modules
             return string.Format("{0}-{1}:{2}#{3}", path, fileName, caller, number);
         }
 
-        //from http://stackoverflow.com/questions/8767103/how-to-remove-invalid-code-points-from-a-string
+        // from http://stackoverflow.com/questions/8767103/how-to-remove-invalid-code-points-from-a-string
         public static string StripInvalidUnicodeCharacters(string str)
         {
             var invalidCharactersRegex = new Regex("([\ud800-\udbff](?![\udc00-\udfff]))|((?<![\ud800-\udbff])[\udc00-\udfff])");

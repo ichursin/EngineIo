@@ -18,11 +18,13 @@ namespace EngineIo.Client.Transports
             : base(opts)
         {
             Name = NAME;
+
             Cookies = new List<KeyValuePair<string, string>>();
             foreach (var cookie in opts.Cookies)
             {
                 Cookies.Add(new KeyValuePair<string, string>(cookie.Key, cookie.Value));
             }
+
             MyExtraHeaders = new List<KeyValuePair<string, string>>();
             foreach (var header in opts.ExtraHeaders)
             {
@@ -39,6 +41,7 @@ namespace EngineIo.Client.Transports
             {
                 EnableAutoSendPing = false
             };
+
             if (ServerCertificate.Ignore)
             {
                 var security = ws.Security;
@@ -49,11 +52,13 @@ namespace EngineIo.Client.Transports
                     security.AllowNameMismatchCertificate = true;
                 }
             }
+
             ws.Opened += ws_Opened;
             ws.Closed += ws_Closed;
             ws.MessageReceived += ws_MessageReceived;
             ws.DataReceived += ws_DataReceived;
             ws.Error += ws_Error;
+
             ws.Open();
         }
 
@@ -61,6 +66,7 @@ namespace EngineIo.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_DataReceived " + e.Data);
+
             OnData(e.Data);
         }
 
@@ -68,6 +74,7 @@ namespace EngineIo.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_Opened " + ws.SupportBinary);
+
             OnOpen();
         }
 
@@ -75,11 +82,13 @@ namespace EngineIo.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_Closed");
+
             ws.Opened -= ws_Opened;
             ws.Closed -= ws_Closed;
             ws.MessageReceived -= ws_MessageReceived;
             ws.DataReceived -= ws_DataReceived;
             ws.Error -= ws_Error;
+
             OnClose();
         }
 
@@ -87,6 +96,7 @@ namespace EngineIo.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_MessageReceived e.Message= " + e.Message);
+
             OnData(e.Message);
         }
 
@@ -98,6 +108,7 @@ namespace EngineIo.Client.Transports
         protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
         {
             Writable = false;
+
             foreach (var packet in packets)
             {
                 Parser.Parser.EncodePacket(packet, new WriteEncodeCallback(this));
@@ -114,36 +125,35 @@ namespace EngineIo.Client.Transports
 
         public class WriteEncodeCallback : IEncodeCallback
         {
-            private WebSocket webSocket;
+            private readonly WebSocket _webSocket;
 
             public WriteEncodeCallback(WebSocket webSocket)
             {
-                webSocket = webSocket;
+                _webSocket = webSocket;
             }
 
             public void Call(object data)
             {
-                //var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger(Global.CallerName());
 
-                if (data is string)
+                if (data is string message)
                 {
-                    webSocket.ws.Send((string)data);
+                    _webSocket.ws.Send(message);
                 }
-                else if (data is byte[])
+
+                if (data is byte[] bytes)
                 {
-                    var d = (byte[])data;
+                    _webSocket.ws.Send(bytes, 0, bytes.Length);
 
-                    //try
-                    //{
-                    //    var dataString = BitConverter.ToString(d);
-                    //    //log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    log.Error(e);
-                    //}
-
-                    webSocket.ws.Send(d, 0, d.Length);
+                    // try
+                    // {
+                    //     var dataString = BitConverter.ToString(d);
+                    //     // log.Info(string.Format("WriteEncodeCallback byte[] data {0}", dataString));
+                    // }
+                    // catch (Exception e)
+                    // {
+                    //     log.Error(e);
+                    // }
                 }
             }
         }
@@ -152,7 +162,6 @@ namespace EngineIo.Client.Transports
         {
             if (ws != null)
             {
-
                 try
                 {
                     ws.Close();
@@ -167,20 +176,18 @@ namespace EngineIo.Client.Transports
 
         public string Uri()
         {
-            Dictionary<string, string> query = null;
-            query = Query == null ? new Dictionary<string, string>() : new Dictionary<string, string>(Query);
+            var query = Query ?? new Dictionary<string, string>();
             var schema = Secure ? "wss" : "ws";
             var portString = "";
 
             if (TimestampRequests)
             {
-                query.Add(TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
+                query.Add(TimestampParam, $"{DateTime.Now.Ticks}-{Timestamps++}");
             }
 
             var _query = ParseQS.Encode(query);
 
-            if (Port > 0 && (("wss" == schema && Port != 443)
-                    || ("ws" == schema && Port != 80)))
+            if (Port > 0 && (("wss" == schema && Port != 443) || ("ws" == schema && Port != 80)))
             {
                 portString = ":" + Port;
             }

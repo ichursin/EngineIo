@@ -117,12 +117,12 @@ namespace EngineIo.Client.Transports
 
             public void Call(params object[] args)
             {
-                //var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger(Global.CallerName());
+                // log.Info("pre-pause polling complete");
 
-                //log.Info("pre-pause polling complete");
                 if (--_total[0] == 0)
                 {
-                    _pause();
+                    _pause.Invoke();
                 }
             }
 
@@ -132,9 +132,9 @@ namespace EngineIo.Client.Transports
 
         private void Poll()
         {
-            //var log = LogManager.GetLogger(Global.CallerName());
+            // var log = LogManager.GetLogger(Global.CallerName());
+            // log.Info("polling");
 
-            //log.Info("polling");
             IsPolling = true;
             DoPoll();
             Emit(EVENT_POLL);
@@ -207,7 +207,6 @@ namespace EngineIo.Client.Transports
                     log.Info(string.Format("ignoring poll - transport state {0}", ReadyState));
                 }
             }
-
         }
 
         private class CloseListener : IListener
@@ -232,9 +231,7 @@ namespace EngineIo.Client.Transports
             }
 
             public int CompareTo(IListener other)
-            {
-                return Id.CompareTo(other.Id);
-            }
+                => Id.CompareTo(other.Id);
         }
 
         protected override void DoClose()
@@ -268,8 +265,8 @@ namespace EngineIo.Client.Transports
 
             public void Call(object data)
             {
-                //var log = LogManager.GetLogger(Global.CallerName());
-                //log.Info("SendEncodeCallback data = " + data);
+                // var log = LogManager.GetLogger(Global.CallerName());
+                // log.Info("SendEncodeCallback data = " + data);
 
                 var byteData = (byte[])data;
                 _polling.DoWrite(byteData, () =>
@@ -278,7 +275,6 @@ namespace EngineIo.Client.Transports
                     _polling.Emit(EVENT_DRAIN);
                 });
             }
-
         }
 
         protected override void Write(ImmutableList<Packet> packets)
@@ -305,11 +301,10 @@ namespace EngineIo.Client.Transports
 
             if (TimestampRequests)
             {
-                query.Add(TimestampParam, DateTime.Now.Ticks + "-" + Transport.Timestamps++);
+                query.Add(TimestampParam, $"{DateTime.Now.Ticks}-{Timestamps++}");
             }
 
             query.Add("b64", "1");
-
 
             string _query = ParseQS.Encode(query);
 

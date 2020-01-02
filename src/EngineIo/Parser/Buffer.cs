@@ -21,6 +21,7 @@ namespace EngineIo.Parser
             {
                 return Array.Empty<byte>();
             }
+
             if (list.Length == 1)
             {
                 return list[0];

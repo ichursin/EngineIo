@@ -189,11 +189,11 @@ namespace EngineIo_Tests.ClientTests
             socket.On(Socket.EVENT_PACKET_CREATE, () =>
             {
                 noPacket = false;
-                //log.Info("NotSendPacketsIfSocketCloses EVENT_PACKET_CREATE noPacket = " + noPacket);
+                // log.Info("NotSendPacketsIfSocketCloses EVENT_PACKET_CREATE noPacket = " + noPacket);
             });
             socket.Close();
             await Task.Delay(1000);
-            //log.Info("NotSendPacketsIfSocketCloses end noPacket = " + noPacket);
+            // log.Info("NotSendPacketsIfSocketCloses end noPacket = " + noPacket);
             Assert.True(noPacket);
         }
     }
