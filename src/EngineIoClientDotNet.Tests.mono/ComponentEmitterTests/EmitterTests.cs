@@ -12,9 +12,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         {
             private readonly List<object> _calls;
 
+            public int Id { get; } = 0;
+
             public TestListener1(List<object> calls)
             {
-                this._calls = calls;
+                _calls = calls;
             }
 
             public void Call(params object[] args)
@@ -24,23 +26,18 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         public class TestListener2 : IListener
         {
             private readonly List<object> _calls;
 
+            public int Id { get; } = 0;
+
             public TestListener2(List<object> calls)
             {
-                this._calls = calls;
+                _calls = calls;
             }
 
             public void Call(params object[] args)
@@ -50,25 +47,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
-
+                => Id.CompareTo(other.Id);
         }
-
 
         [Fact]
         public void On()
         {
-
-
-
-
             var emitter = new Emitter();
             var calls = new List<object>();
 
@@ -113,9 +97,11 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         {
             private readonly List<object> _calls;
 
+            public int Id { get; } = 0;
+
             public TestListener3(List<object> calls)
             {
-                this._calls = calls;
+                _calls = calls;
             }
 
             public void Call(params object[] args)
@@ -125,23 +111,19 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
+                return Id.CompareTo(other.Id);
             }
-
-            public int GetId()
-            {
-                return 0;
-            }
-
         }
 
         public class TestListener4 : IListener
         {
             private readonly List<object> _calls;
 
+            public int Id { get; } = 0;
+
             public TestListener4(List<object> calls)
             {
-                this._calls = calls;
+                _calls = calls;
             }
 
             public void Call(params object[] args)
@@ -151,14 +133,8 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
+                return Id.CompareTo(other.Id);
             }
-
-            public int GetId()
-            {
-                return 0;
-            }
-
         }
 
         [Fact]
@@ -210,26 +186,22 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
         {
             private readonly List<bool> _called;
 
+            public int Id { get; } = 0;
+
             public TestListener5(List<bool> called)
             {
-                this._called = called;
+                _called = called;
             }
 
             public void Call(params object[] args)
             {
-                this._called[0] = true;
+                _called[0] = true;
             }
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
+                return Id.CompareTo(other.Id);
             }
-
-            public int GetId()
-            {
-                return 0;
-            }
-
         }
 
         public class TestListener6 : IListener
@@ -237,10 +209,12 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
             private readonly Emitter _emitter;
             private readonly IListener _bListener;
 
+            public int Id { get; } = 0;
+
             public TestListener6(Emitter emitter, IListener bListener)
             {
-                this._emitter = emitter;
-                this._bListener = bListener;
+                _emitter = emitter;
+                _bListener = bListener;
             }
 
             public void Call(params object[] args)
@@ -250,23 +224,13 @@ namespace Quobject.EngineIoClientDotNet_Tests.ComponentEmitterTests
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
+                return Id.CompareTo(other.Id);
             }
-
-            public int GetId()
-            {
-                return 0;
-            }
-
         }
 
         [Fact]
         public void OffWhenCalledfromEvent()
         {
-
-
-
-
             var emitter = new Emitter();
             var called = new List<bool> { false };
 

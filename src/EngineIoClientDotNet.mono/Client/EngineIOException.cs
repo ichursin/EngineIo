@@ -12,14 +12,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
         }
 
-
-        public EngineIOException(Exception cause)
-            : base("", cause)
-        {
-        }
-
-        public EngineIOException(string message, Exception cause)
-            : base(message, cause)
+        public EngineIOException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
     }

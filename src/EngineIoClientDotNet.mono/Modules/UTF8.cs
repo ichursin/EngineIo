@@ -131,7 +131,6 @@ namespace Quobject.EngineIoClientDotNet.Modules
             throw new UTF8Exception("Invalid continuation byte");
         }
 
-
         private static string EncodeCodePoint(int codePoint)
         {
             var sb = new StringBuilder();
@@ -167,8 +166,6 @@ namespace Quobject.EngineIoClientDotNet.Modules
         {
             return (char)(((codePoint >> shift) & 0x3F) | 0x80);
         }
-
-
 
         private static List<int> Ucs2Decode(string str)
         {
@@ -222,7 +219,5 @@ namespace Quobject.EngineIoClientDotNet.Modules
             }
             return sb.ToString();
         }
-
-
     }
 }

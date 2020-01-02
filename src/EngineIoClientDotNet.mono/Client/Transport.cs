@@ -34,7 +34,8 @@ namespace Quobject.EngineIoClientDotNet.Client
         private bool _writeable;
         public bool Writable
         {
-            get { return _writeable; }
+            get => _writeable;
+
             set
             {
                 var log = LogManager.GetLogger(Global.CallerName());
@@ -43,16 +44,10 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
         }
 
-        private int myVar;
-
-        public int MyProperty
-        {
-            get { return myVar; }
-            set { myVar = value; }
-        }
+        public int MyProperty { get; set; }
 
         public string Name;
-        public Dictionary<string, string> Query;
+        public IDictionary<string, string> Query;
 
         protected bool Secure;
         protected bool TimestampRequests;
@@ -66,7 +61,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         protected bool ForceJsonp = false;
         protected string Cookie;
 
-        protected Dictionary<string, string> ExtraHeaders;
+        protected IDictionary<string, string> ExtraHeaders;
 
 
         protected ReadyStateEnum ReadyState = ReadyStateEnum.CLOSED;

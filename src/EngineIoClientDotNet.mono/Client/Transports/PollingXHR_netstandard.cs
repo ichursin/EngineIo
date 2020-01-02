@@ -41,53 +41,43 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private class EventRequestHeadersListener : IListener
         {
-            private PollingXHR pollingXHR;
+            private readonly PollingXHR _pollingXHR;
+
+            public int Id { get; } = 0;
 
             public EventRequestHeadersListener(PollingXHR pollingXHR)
             {
-                this.pollingXHR = pollingXHR;
+                _pollingXHR = pollingXHR;
             }
 
             public void Call(params object[] args)
             {
                 // Never execute asynchronously for support to modify headers.
-                pollingXHR.Emit(EVENT_RESPONSE_HEADERS, args[0]);
+                _pollingXHR.Emit(EVENT_RESPONSE_HEADERS, args[0]);
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class EventResponseHeadersListener : IListener
         {
-            private PollingXHR pollingXHR;
+            private readonly PollingXHR _pollingXHR;
+
+            public int Id { get; } = 0;
 
             public EventResponseHeadersListener(PollingXHR pollingXHR)
             {
-                this.pollingXHR = pollingXHR;
+                _pollingXHR = pollingXHR;
             }
 
             public void Call(params object[] args)
             {
-                pollingXHR.Emit(EVENT_REQUEST_HEADERS, args[0]);
+                _pollingXHR.Emit(EVENT_REQUEST_HEADERS, args[0]);
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         protected override void DoWrite(byte[] data, Action action)
@@ -113,53 +103,43 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private class SendEventErrorListener : IListener
         {
-            private PollingXHR pollingXHR;
+            private readonly PollingXHR _pollingXHR;
+
+            public int Id { get; } = 0;
 
             public SendEventErrorListener(PollingXHR pollingXHR)
             {
-                this.pollingXHR = pollingXHR;
+                _pollingXHR = pollingXHR;
             }
 
             public void Call(params object[] args)
             {
                 var err = args.Length > 0 && args[0] is Exception ? (Exception)args[0] : null;
-                pollingXHR.OnError("xhr post error", err);
+                _pollingXHR.OnError("xhr post error", err);
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class SendEventSuccessListener : IListener
         {
-            private Action action;
+            private readonly Action _action;
+
+            public int Id { get; } = 0;
 
             public SendEventSuccessListener(Action action)
             {
-                this.action = action;
+                _action = action;
             }
 
             public void Call(params object[] args)
             {
-                action?.Invoke();
+                _action?.Invoke();
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         protected override void DoPoll()
@@ -176,40 +156,39 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
         private class DoPollEventDataListener : IListener
         {
-            private PollingXHR pollingXHR;
+            private readonly PollingXHR _pollingXHR;
+
+            public int Id { get; } = 0;
 
             public DoPollEventDataListener(PollingXHR pollingXHR)
             {
-                this.pollingXHR = pollingXHR;
+                _pollingXHR = pollingXHR;
             }
 
             public void Call(params object[] args)
             {
                 var arg = args.Length > 0 ? args[0] : null;
+
                 if (arg is string)
                 {
-                    pollingXHR.OnData((string)arg);
+                    _pollingXHR.OnData((string)arg);
                 }
                 else if (arg is byte[])
                 {
-                    pollingXHR.OnData((byte[])arg);
+                    _pollingXHR.OnData((byte[])arg);
                 }
             }
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
+                return Id.CompareTo(other.Id);
             }
         }
 
         private class DoPollEventErrorListener : IListener
         {
             private PollingXHR pollingXHR;
+            public int Id { get; } = 0;
 
             public DoPollEventErrorListener(PollingXHR pollingXHR)
             {
@@ -224,12 +203,7 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
+                return Id.CompareTo(other.Id);
             }
         }
 

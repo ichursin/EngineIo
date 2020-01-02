@@ -6,11 +6,11 @@ namespace Quobject.EngineIoClientDotNet.Thread
 {
     public class EasyTimer
     {
-        private CancellationTokenSource ts;
+        private readonly CancellationTokenSource _ts;
 
         public EasyTimer(CancellationTokenSource ts)
         {
-            this.ts = ts;
+            _ts = ts;
         }
 
         public static EasyTimer SetTimeout(Action method, int delayInMilliseconds)
@@ -29,7 +29,6 @@ namespace Quobject.EngineIoClientDotNet.Thread
                     }
                 });
 
-
             // Returns a stop handle which can be used for stopping
             // the timer, if required
             return new EasyTimer(ts);
@@ -39,12 +38,8 @@ namespace Quobject.EngineIoClientDotNet.Thread
         {
             //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info("EasyTimer stop");
-            if (ts != null)
-            {
-                ts.Cancel();
-            }
+            _ts?.Cancel();
         }
-
 
         public static void TaskRun(Action action)
         {
@@ -56,6 +51,4 @@ namespace Quobject.EngineIoClientDotNet.Thread
             Task.Run(action);
         }
     }
-
-
 }

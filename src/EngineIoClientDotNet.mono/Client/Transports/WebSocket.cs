@@ -148,8 +148,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
             }
         }
 
-
-
         protected override void DoClose()
         {
             if (ws != null)
@@ -166,8 +164,6 @@ namespace Quobject.EngineIoClientDotNet.Client.Transports
                 }
             }
         }
-
-
 
         public string Uri()
         {

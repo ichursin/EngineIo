@@ -398,6 +398,5 @@ namespace Quobject.EngineIoClientDotNet.Parser
                 _results.Add(Buffer.Concat(new byte[][] { sizeBuffer1, packet1 }));
             }
         }
-
     }
 }

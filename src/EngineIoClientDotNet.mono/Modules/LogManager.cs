@@ -16,7 +16,8 @@ namespace Quobject.EngineIoClientDotNet.Modules
         #region Statics
 
         public static void SetupLogManager()
-        { }
+        {
+        }
 
         public static LogManager GetLogger(string type)
         {
@@ -44,7 +45,7 @@ namespace Quobject.EngineIoClientDotNet.Modules
 
         public LogManager(string type)
         {
-            this.MyType = type;
+            MyType = type;
         }
 
         [Conditional("DEBUG")]
@@ -75,18 +76,17 @@ namespace Quobject.EngineIoClientDotNet.Modules
         [Conditional("DEBUG")]
         public void Error(string p, Exception exception)
         {
-            this.Info($"ERROR {p} {exception.Message} {exception.StackTrace}");
+            Info($"ERROR {p} {exception.Message} {exception.StackTrace}");
             if (exception.InnerException != null)
             {
-                this.Info($"ERROR exception.InnerException {p} {exception.InnerException.Message} {exception.InnerException.StackTrace}");
+                Info($"ERROR exception.InnerException {p} {exception.InnerException.Message} {exception.InnerException.StackTrace}");
             }
         }
-
 
         [Conditional("DEBUG")]
         internal void Error(Exception e)
         {
-            this.Error("", e);
+            Error("", e);
         }
     }
 }

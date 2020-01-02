@@ -9,7 +9,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
 
         private long _limit = 0;
 
-
         public ByteBuffer(int length)
         {
             this._memoryStream = new MemoryStream();
@@ -17,7 +16,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
             _memoryStream.Capacity = length;
             _limit = length;
         }
-
 
         public static ByteBuffer Allocate(int length)
         {
@@ -94,7 +92,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
             return this;
         }
 
-
         /// <summary>
         /// Relative bulk get method.
         /// 
@@ -118,7 +115,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             _memoryStream.Position = newPosition;
         }
-
 
         /// <summary>
         /// Sets this buffer's limit. If the position is larger than the new limit then it is set to the new limit. 
@@ -144,8 +140,6 @@ namespace Quobject.EngineIoClientDotNet.Parser
         {
             return (_limit - _memoryStream.Position);
         }
-
-
 
         /// <summary>
         /// Clears this buffer. The position is set to zero, the limit is set to the capacity, and the mark is discarded.

@@ -110,29 +110,28 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         public class TestHandshakeListener : IListener
         {
+            private readonly ServerConnectionTest _serverConnectionTest;
+
             public HandshakeData HandshakeData;
-            private ServerConnectionTest serverConnectionTest;
+
+            public int Id { get; } = 0;
+
 
             public TestHandshakeListener(ServerConnectionTest serverConnectionTest)
             {
-                this.serverConnectionTest = serverConnectionTest;
+                _serverConnectionTest = serverConnectionTest;
             }
 
             public void Call(params object[] args)
             {
                 //log.Info(string.Format("open args[0]={0} args.Length={1}", args[0], args.Length));
                 HandshakeData = args[0] as HandshakeData;
-                serverConnectionTest._manualResetEvent.Set();
+                _serverConnectionTest._manualResetEvent.Set();
             }
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
+                return Id.CompareTo(other.Id);
             }
         }
 

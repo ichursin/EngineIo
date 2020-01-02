@@ -30,54 +30,43 @@ namespace Quobject.EngineIoClientDotNet_Tests.ClientTests
 
         public class TestListener : IListener
         {
+            public int Id { get; } = 0;
+
             public void Call(params object[] args)
             {
-                //log.Info("open");
+                // log.Info("open");
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         public class MessageListener : IListener
         {
-            private Socket socket;
-            private ConnectionTest connectionTest;
+            private readonly Socket _socket;
+            private readonly ConnectionTest _connectionTest;
+            public int Id { get; } = 0;
 
             public MessageListener(Socket socket)
             {
-                this.socket = socket;
+                _socket = socket;
             }
 
             public MessageListener(Socket socket, ConnectionTest connectionTest)
             {
-                this.socket = socket;
-                this.connectionTest = connectionTest;
+                _socket = socket;
+                _connectionTest = connectionTest;
             }
 
             public void Call(params object[] args)
             {
                 //log.Info("message = " + args[0]);
-                connectionTest.Message = (string)args[0];
-                connectionTest._manualResetEvent.Set();
+                _connectionTest.Message = (string)args[0];
+                _connectionTest._manualResetEvent.Set();
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         [Fact]

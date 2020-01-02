@@ -58,7 +58,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         private string TimestampParam;
         private ImmutableList<string> Transports;
         private ImmutableList<string> Upgrades;
-        private Dictionary<string, string> Query;
+        private IDictionary<string, string> Query;
         private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
         private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
         private Dictionary<string, string> Cookies = new Dictionary<string, string>();
@@ -105,7 +105,6 @@ namespace Quobject.EngineIoClientDotNet.Client
         public Socket(string uri, Options options)
             : this(uri == null ? null : String2Uri(uri), options)
         {
-
         }
 
         private static Uri String2Uri(string uri)
@@ -165,7 +164,6 @@ namespace Quobject.EngineIoClientDotNet.Client
                 ServerCertificate.IgnoreServerCertificateValidation();
             }
             ExtraHeaders = options.ExtraHeaders;
-
         }
 
         public Socket Open()
@@ -255,104 +253,84 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private class EventDrainListener : IListener
         {
-            private Socket socket;
+            private readonly Socket _socket;
+
+            public int Id { get; } = 0;
 
             public EventDrainListener(Socket socket)
             {
-                this.socket = socket;
-            }
-
-            void IListener.Call(params object[] args)
-            {
-                socket.OnDrain();
+                _socket = socket;
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
+                => Id.CompareTo(other.Id);
 
-            public int GetId()
-            {
-                return 0;
-            }
+            void IListener.Call(params object[] args) => _socket.OnDrain();
         }
 
         private class EventPacketListener : IListener
         {
-            private Socket socket;
+            private readonly Socket _socket;
+
+            public int Id { get; } = 0;
 
             public EventPacketListener(Socket socket)
             {
-                this.socket = socket;
+                _socket = socket;
             }
 
             void IListener.Call(params object[] args)
             {
-                socket.OnPacket(args.Length > 0 ? (Packet)args[0] : null);
+                _socket.OnPacket(args.Length > 0 ? (Packet)args[0] : null);
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class EventErrorListener : IListener
         {
-            private Socket socket;
+            private readonly Socket _socket;
+
+            public int Id { get; } = 0;
 
             public EventErrorListener(Socket socket)
             {
-                this.socket = socket;
+                _socket = socket;
             }
 
             public void Call(params object[] args)
             {
-                socket.OnError(args.Length > 0 ? (Exception)args[0] : null);
+                _socket.OnError(args.Length > 0 ? (Exception)args[0] : null);
             }
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
+                return Id.CompareTo(other.Id);
             }
         }
 
         private class EventCloseListener : IListener
         {
-            private Socket socket;
+            private readonly Socket _socket;
+
+            public int Id { get; } = 0;
 
             public EventCloseListener(Socket socket)
             {
-                this.socket = socket;
+                _socket = socket;
             }
 
             public void Call(params object[] args)
             {
-                socket.OnClose("transport close");
+                _socket.OnClose("transport close");
             }
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
+                return Id.CompareTo(other.Id);
             }
         }
-
 
         public class Options : Transport.Options
         {
@@ -525,30 +503,25 @@ namespace Quobject.EngineIoClientDotNet.Client
 
         private class OnHeartbeatAsListener : IListener
         {
-            private Socket socket;
+            private readonly Socket _socket;
+
+            public int Id { get; } = 0;
 
             public OnHeartbeatAsListener(Socket socket)
             {
-                this.socket = socket;
+                _socket = socket;
             }
 
             void IListener.Call(params object[] args)
             {
-                socket.OnHeartbeat(args.Length > 0 ? (long)args[0] : 0);
+                _socket.OnHeartbeat(args.Length > 0 ? (long)args[0] : 0);
             }
 
             public int CompareTo(IListener other)
             {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
+                return Id.CompareTo(other.Id);
             }
         }
-
-
 
         private void SetPing()
         {
@@ -615,8 +588,6 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             SendPacket(Packet.MESSAGE, msg, fn);
         }
-
-
 
         private void SendPacket(string type)
         {
@@ -692,7 +663,6 @@ namespace Quobject.EngineIoClientDotNet.Client
 
             Flush();
             Emit(EVENT_OPEN);
-
 
             if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport is Polling)
             //if (ReadyState == ReadyStateEnum.OPEN && Upgrade && this.Transport)
@@ -773,6 +743,7 @@ namespace Quobject.EngineIoClientDotNet.Client
         {
             private ProbeParameters Parameters;
 
+            public int Id => 0;
 
             public OnTransportOpenListener(ProbeParameters parameters)
             {
@@ -795,11 +766,12 @@ namespace Quobject.EngineIoClientDotNet.Client
             {
                 private OnTransportOpenListener _onTransportOpenListener;
 
+                public int Id { get; } = 0;
+
                 public ProbeEventPacketListener(OnTransportOpenListener onTransportOpenListener)
                 {
-                    this._onTransportOpenListener = onTransportOpenListener;
+                    _onTransportOpenListener = onTransportOpenListener;
                 }
-
 
                 void IListener.Call(params object[] args)
                 {
@@ -882,67 +854,47 @@ namespace Quobject.EngineIoClientDotNet.Client
 
                 }
 
-
                 public int CompareTo(IListener other)
-                {
-                    return this.GetId().CompareTo(other.GetId());
-                }
-
-                public int GetId()
-                {
-                    return 0;
-                }
+                    => Id.CompareTo(other.Id);
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class FreezeTransportListener : IListener
         {
-            private ProbeParameters Parameters;
+            private readonly ProbeParameters _parameters;
+
+            public int Id { get; } = 0;
 
             public FreezeTransportListener(ProbeParameters parameters)
             {
-                this.Parameters = parameters;
+                _parameters = parameters;
             }
 
             void IListener.Call(params object[] args)
             {
-                if (Parameters.Failed[0])
+                if (_parameters.Failed[0])
                 {
                     return;
                 }
 
-                Parameters.Failed = Parameters.Failed.SetItem(0, true);
+                _parameters.Failed = _parameters.Failed.SetItem(0, true);
 
-                Parameters.Cleanup[0]();
+                _parameters.Cleanup[0]();
 
-                if (Parameters.Transport.Count < 1)
+                if (_parameters.Transport.Count < 1)
                 {
                     return;
                 }
 
-                Parameters.Transport[0].Close();
-                Parameters.Transport = ImmutableList<Transport>.Empty;
+                _parameters.Transport[0].Close();
+                _parameters.Transport = ImmutableList<Transport>.Empty;
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class ProbingOnErrorListener : IListener
@@ -951,11 +903,13 @@ namespace Quobject.EngineIoClientDotNet.Client
             private readonly ImmutableList<Transport> _transport;
             private readonly IListener _freezeTransport;
 
+            public int Id { get; } = 0;
+
             public ProbingOnErrorListener(Socket socket, ImmutableList<Transport> transport, IListener freezeTransport)
             {
-                this._socket = socket;
-                this._transport = transport;
-                this._freezeTransport = freezeTransport;
+                _socket = socket;
+                _transport = transport;
+                _freezeTransport = freezeTransport;
             }
 
             void IListener.Call(params object[] args)
@@ -985,23 +939,18 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class ProbingOnTransportCloseListener : IListener
         {
             private readonly IListener _onError;
 
+            public int Id { get; } = 0;
+
             public ProbingOnTransportCloseListener(ProbingOnErrorListener onError)
             {
-                this._onError = onError;
+                _onError = onError;
             }
 
             void IListener.Call(params object[] args)
@@ -1010,23 +959,18 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class ProbingOnCloseListener : IListener
         {
-            private IListener _onError;
+            private readonly IListener _onError;
+
+            public int Id { get; } = 0;
 
             public ProbingOnCloseListener(ProbingOnErrorListener onError)
             {
-                this._onError = onError;
+                _onError = onError;
             }
 
             void IListener.Call(params object[] args)
@@ -1035,14 +979,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         private class ProbingOnUpgradeListener : IListener
@@ -1050,10 +987,12 @@ namespace Quobject.EngineIoClientDotNet.Client
             private readonly IListener _freezeTransport;
             private readonly ImmutableList<Transport> _transport;
 
+            public int Id { get; } = 0;
+
             public ProbingOnUpgradeListener(FreezeTransportListener freezeTransport, ImmutableList<Transport> transport)
             {
-                this._freezeTransport = freezeTransport;
-                this._transport = transport;
+                _freezeTransport = freezeTransport;
+                _transport = transport;
             }
 
             void IListener.Call(params object[] args)
@@ -1069,14 +1008,7 @@ namespace Quobject.EngineIoClientDotNet.Client
             }
 
             public int CompareTo(IListener other)
-            {
-                return this.GetId().CompareTo(other.GetId());
-            }
-
-            public int GetId()
-            {
-                return 0;
-            }
+                => Id.CompareTo(other.Id);
         }
 
         public Socket Close()
@@ -1208,7 +1140,5 @@ namespace Quobject.EngineIoClientDotNet.Client
                 OnClose("transport error", exception);
             }
         }
-
-
     }
 }

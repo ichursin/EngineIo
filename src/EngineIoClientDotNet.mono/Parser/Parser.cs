@@ -5,13 +5,9 @@
     /// shared by both engine.io-client and engine.io.
     /// <see href="https://github.com/Automattic/engine.io-parser">https://github.com/Automattic/engine.io-parser</see>
     /// </remarks>
-    public class Parser
+    public static class Parser
     {
         public static readonly int Protocol = 3;
-
-        private Parser()
-        {
-        }
 
         public static void EncodePacket(Packet packet, IEncodeCallback callback)
         {

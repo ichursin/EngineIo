@@ -1,12 +1,9 @@
-﻿namespace Quobject.EngineIoClientDotNet.Parser
+﻿using System;
+
+namespace Quobject.EngineIoClientDotNet.Parser
 {
-    internal class Buffer
+    internal static class Buffer
     {
-
-        private Buffer()
-        {
-        }
-
         public static byte[] Concat(byte[][] list)
         {
             int length = 0;
@@ -22,7 +19,7 @@
         {
             if (list.Length == 0)
             {
-                return new byte[0];
+                return Array.Empty<byte>();
             }
             if (list.Length == 1)
             {

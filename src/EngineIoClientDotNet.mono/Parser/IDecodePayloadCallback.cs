@@ -1,5 +1,4 @@
-﻿
-namespace Quobject.EngineIoClientDotNet.Parser
+﻿namespace Quobject.EngineIoClientDotNet.Parser
 {
     public interface IDecodePayloadCallback
     {
