@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EngineIo_Tests.ClientTests
+namespace EngineIo.Tests.ClientTests
 {
     public class SocketTest : Connection
     {
@@ -21,7 +21,7 @@ namespace EngineIo_Tests.ClientTests
             var immutablelist = socket.FilterUpgrades(ImmutableList<string>.Empty.Add("polling").Add("websocket"));
 
             Assert.Equal("polling", immutablelist[0]);
-            Assert.Equal(1, immutablelist.Count);
+            Assert.Single(immutablelist);
         }
 
         [Fact]

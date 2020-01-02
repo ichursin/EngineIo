@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EngineIo_Tests.ClientTests
+namespace EngineIo.Tests.ClientTests
 {
     public class ConnectionTest : Connection
     {

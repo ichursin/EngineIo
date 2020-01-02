@@ -1,7 +1,7 @@
 ﻿using EngineIo.Client;
 using Xunit;
 
-namespace EngineIo_Tests.ClientTests
+namespace EngineIo.Tests.ClientTests
 {
     public class HandshakeDataTests
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Xunit;
 
 
-namespace EngineIo_Tests.ModulesTests
+namespace EngineIo.Tests.ModulesTests
 {
     public class ParseQsTests
     {
@@ -30,7 +30,6 @@ namespace EngineIo_Tests.ModulesTests
         [Fact]
         public void Encode()
         {
-
             Dictionary<string, string> obj;
 
             obj = new Dictionary<string, string> { { "a", "b" } };
@@ -44,7 +43,6 @@ namespace EngineIo_Tests.ModulesTests
             obj = new Dictionary<string, string> { { "a", "b" }, { "c", "tobi rocks" } };
             imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal("a=b&c=tobi%20rocks", ParseQS.Encode(imObj));
-
         }
 
 

@@ -2,7 +2,7 @@
 using EngineIo.Parser;
 using Xunit;
 
-namespace EngineIo_Tests.ParserTests
+namespace EngineIo.Tests.ParserTests
 {
     public class DecodeTests
     {
@@ -14,7 +14,7 @@ namespace EngineIo_Tests.ParserTests
             LogManager.SetupLogManager();
             var log = LogManager.GetLogger("DecodeTests DecodeBadFormat");
 
-            Packet p = Parser.DecodePacket(":::");
+            Packet p = Parser.Parser.DecodePacket(":::");
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
         }
@@ -22,7 +22,7 @@ namespace EngineIo_Tests.ParserTests
         [Fact]
         public void DecodeInexistingTypes()
         {
-            Packet p = Parser.DecodePacket("94103");
+            Packet p = Parser.Parser.DecodePacket("94103");
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
         }
@@ -30,7 +30,7 @@ namespace EngineIo_Tests.ParserTests
         [Fact]
         public void DecodeInvalidUTF8()
         {
-            Packet p = Parser.DecodePacket("4\uffff", true);
+            Packet p = Parser.Parser.DecodePacket("4\uffff", true);
             Assert.Equal(Packet.ERROR, p.Type);
             Assert.Equal(PARSER_ERROR, p.Data);
         }

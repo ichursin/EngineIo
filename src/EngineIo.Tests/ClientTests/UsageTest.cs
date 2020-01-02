@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace EngineIo_Tests.ClientTests
+namespace EngineIo.Tests.ClientTests
 {
     public class UsageTest : Connection
     {

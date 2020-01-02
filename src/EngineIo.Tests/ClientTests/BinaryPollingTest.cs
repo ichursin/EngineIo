@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Threading;
 using Xunit;
 
-namespace EngineIo_Tests.ClientTests
+namespace EngineIo.Tests.ClientTests
 {
     public class BinaryPollingTest : Connection
     {

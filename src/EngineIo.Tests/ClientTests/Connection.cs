@@ -1,7 +1,7 @@
 ﻿using EngineIo.Client;
 using EngineIo.Modules;
 
-namespace EngineIo_Tests.ClientTests
+namespace EngineIo.Tests.ClientTests
 {
     public class Connection
     {

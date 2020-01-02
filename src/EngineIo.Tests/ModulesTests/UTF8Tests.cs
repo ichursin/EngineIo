@@ -2,7 +2,7 @@
 using Xunit;
 
 
-namespace EngineIo_Tests.ModulesTests
+namespace EngineIo.Tests.ModulesTests
 {
     public class Utf8Tests
     {

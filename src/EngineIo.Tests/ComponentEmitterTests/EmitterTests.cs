@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace EngineIo_Tests.ComponentEmitterTests
+namespace EngineIo.Tests.ComponentEmitterTests
 {
     public class EmitterTests
     {

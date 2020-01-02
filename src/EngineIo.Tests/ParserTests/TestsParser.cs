@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace EngineIo_Tests.ParserTests
+namespace EngineIo.Tests.ParserTests
 {
     public class TestsParser
     {
-        string Name { get; set; }
         public interface IPacketTest
         {
             Packet GetPacket();
-
         }
 
         [Fact]
@@ -31,16 +29,13 @@ namespace EngineIo_Tests.ParserTests
                 new EncodeUpgradePacket(),
                 new EncodeFormat1(),
                 new EncodeFormat2(),
-
-
             };
 
             foreach (var test in testList)
             {
-                Parser.EncodePacket(test.GetPacket(), (IEncodeCallback)test);
+                Parser.Parser.EncodePacket(test.GetPacket(), (IEncodeCallback)test);
             }
         }
-
 
         public class EncodeAsStringCallback : IEncodeCallback, IPacketTest
         {
@@ -55,12 +50,11 @@ namespace EngineIo_Tests.ParserTests
             }
         }
 
-
         public class DecodeAsPacketCallback : IEncodeCallback, IPacketTest
         {
             public void Call(object data)
             {
-                Assert.IsType<Packet>(Parser.DecodePacket((string)data));
+                Assert.IsType<Packet>(Parser.Parser.DecodePacket((string)data));
             }
 
             public Packet GetPacket()
@@ -69,12 +63,11 @@ namespace EngineIo_Tests.ParserTests
             }
         }
 
-
         public class NoDataCallback : IEncodeCallback, IPacketTest
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.MESSAGE, p.Type);
                 Assert.Null(p.Data);
             }
@@ -91,7 +84,7 @@ namespace EngineIo_Tests.ParserTests
 
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.OPEN, p.Type);
                 Assert.Equal(Json, p.Data);
             }
@@ -106,7 +99,7 @@ namespace EngineIo_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.CLOSE, p.Type);
             }
 
@@ -120,7 +113,7 @@ namespace EngineIo_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.PING, p.Type);
                 Assert.Equal("1", p.Data);
             }
@@ -135,7 +128,7 @@ namespace EngineIo_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.PONG, p.Type);
                 Assert.Equal("1", p.Data);
             }
@@ -150,7 +143,7 @@ namespace EngineIo_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.MESSAGE, p.Type);
                 Assert.Equal("aaa", p.Data);
             }
@@ -165,7 +158,7 @@ namespace EngineIo_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.MESSAGE, p.Type);
                 Assert.Equal("utf8 â€” string", p.Data);
             }
@@ -180,7 +173,7 @@ namespace EngineIo_Tests.ParserTests
         {
             public void Call(object data)
             {
-                Packet p = Parser.DecodePacket((string)data);
+                Packet p = Parser.Parser.DecodePacket((string)data);
                 Assert.Equal(Packet.UPGRADE, p.Type);
             }
 
@@ -219,38 +212,30 @@ namespace EngineIo_Tests.ParserTests
             }
         }
 
-
-
         public class EncodePayloadsCallback : IEncodeCallback
         {
             public void Call(object data)
             {
                 Assert.IsType<byte[]>(data);
             }
-
-
-
         }
 
         [Fact]
         public void EncodePayloads()
         {
             var packets = new Packet[] { new Packet(Packet.PING), new Packet(Packet.PONG), };
-            Parser.EncodePayload(packets, new EncodePayloadsCallback());
-
+            Parser.Parser.EncodePayload(packets, new EncodePayloadsCallback());
         }
-
 
         public class EncodeAndDecodePayloads_EncodeCallback : IEncodeCallback
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback());
+                Parser.Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback());
             }
 
             public class EncodeAndDecodePayloads_DecodeCallback : IDecodePayloadCallback
             {
-
                 public bool Call(Packet packet, int index, int total)
                 {
                     bool isLast = index + 1 == total;
@@ -265,15 +250,14 @@ namespace EngineIo_Tests.ParserTests
         public void EncodeAndDecodePayloads()
         {
             var packets = new Packet[] { new Packet(Packet.MESSAGE, "a"), };
-            Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback());
-
+            Parser.Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback());
         }
 
         public class EncodeAndDecodePayloads_EncodeCallback2 : IEncodeCallback
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback2());
+                Parser.Parser.DecodePayload((byte[])data, new EncodeAndDecodePayloads_DecodeCallback2());
             }
 
             public class EncodeAndDecodePayloads_DecodeCallback2 : IDecodePayloadCallback
@@ -293,15 +277,14 @@ namespace EngineIo_Tests.ParserTests
         public void EncodeAndDecodePayloads2()
         {
             var packets = new Packet[] { new Packet(Packet.MESSAGE, "a"), new Packet(Packet.PING), };
-            Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback2());
-
+            Parser.Parser.EncodePayload(packets, new EncodeAndDecodePayloads_EncodeCallback2());
         }
 
         public class EncodeAndDecodeEmptyPayloads_EncodeCallback : IEncodeCallback
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[])data, new EncodeAndDecodeEmptyPayloads_DecodeCallback());
+                Parser.Parser.DecodePayload((byte[])data, new EncodeAndDecodeEmptyPayloads_DecodeCallback());
             }
 
             public class EncodeAndDecodeEmptyPayloads_DecodeCallback : IDecodePayloadCallback
@@ -322,16 +305,14 @@ namespace EngineIo_Tests.ParserTests
         public void EncodeAndDecodeEmptyPayloads()
         {
             var packets = new Packet[] { };
-            Parser.EncodePayload(packets, new EncodeAndDecodeEmptyPayloads_EncodeCallback());
-
+            Parser.Parser.EncodePayload(packets, new EncodeAndDecodeEmptyPayloads_EncodeCallback());
         }
-
 
         public class EncodeAndDecodeBinaryContents_EncodeCallback : IEncodeCallback
         {
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[])data, new EncodeAndDecodeBinaryContents_DecodeCallback());
+                Parser.Parser.DecodePayload((byte[])data, new EncodeAndDecodeBinaryContents_DecodeCallback());
             }
 
             public class EncodeAndDecodeBinaryContents_DecodeCallback : IDecodePayloadCallback
@@ -363,8 +344,7 @@ namespace EngineIo_Tests.ParserTests
 
             var packets = new Packet[]
             {new Packet(Packet.MESSAGE, firstBuffer), new Packet(Packet.MESSAGE, secondBuffer)};
-            Parser.EncodePayload(packets, new EncodeAndDecodeBinaryContents_EncodeCallback());
-
+            Parser.Parser.EncodePayload(packets, new EncodeAndDecodeBinaryContents_EncodeCallback());
         }
 
         private static byte[] SecondBuffer()
@@ -374,6 +354,7 @@ namespace EngineIo_Tests.ParserTests
             {
                 secondBuffer[i] = (byte)(5 + i);
             }
+
             return secondBuffer;
         }
 
@@ -384,6 +365,7 @@ namespace EngineIo_Tests.ParserTests
             {
                 firstBuffer[i] = (byte)i;
             }
+
             return firstBuffer;
         }
 
@@ -394,21 +376,19 @@ namespace EngineIo_Tests.ParserTests
             {
                 result[i] = (byte)i;
             }
+
             return result;
         }
 
-
         public class EncodeMixedBinaryAndStringContents_EncodeCallback : IEncodeCallback
         {
-
             public void Call(object data)
             {
-                Parser.DecodePayload((byte[])data, new EncodeMixedBinaryAndStringContents_DecodeCallback());
+                Parser.Parser.DecodePayload((byte[])data, new EncodeMixedBinaryAndStringContents_DecodeCallback());
             }
 
             public class EncodeMixedBinaryAndStringContents_DecodeCallback : IDecodePayloadCallback
             {
-
                 public bool Call(Packet packet, int index, int total)
                 {
                     if (index == 0)
@@ -425,10 +405,10 @@ namespace EngineIo_Tests.ParserTests
                     {
                         Assert.Equal(Packet.CLOSE, packet.Type);
                     }
+
                     return true;
                 }
             }
-
         }
 
         [Fact]
@@ -440,9 +420,7 @@ namespace EngineIo_Tests.ParserTests
                 new Packet(Packet.MESSAGE, "hello"),
                 new Packet(Packet.CLOSE),
             };
-            Parser.EncodePayload(packets, new EncodeMixedBinaryAndStringContents_EncodeCallback());
-
+            Parser.Parser.EncodePayload(packets, new EncodeMixedBinaryAndStringContents_EncodeCallback());
         }
-
     }
 }
