@@ -5,39 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\BinaryPollingTest.cs" Link="ClientTests\BinaryPollingTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\BinaryWebSocketTest.cs" Link="ClientTests\BinaryWebSocketTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\Connection.cs" Link="ClientTests\Connection.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\ConnectionConstants.cs" Link="ClientTests\ConnectionConstants.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\ConnectionTest.cs" Link="ClientTests\ConnectionTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\HandshakeDataTests.cs" Link="ClientTests\HandshakeDataTests.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\ServerConnectionTest.cs" Link="ClientTests\ServerConnectionTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\SocketTest.cs" Link="ClientTests\SocketTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\SSLServerConnectionTest.cs" Link="ClientTests\SSLServerConnectionTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\TransportTest.cs" Link="ClientTests\TransportTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ClientTests\UsageTest.cs" Link="ClientTests\UsageTest.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ComponentEmitterTests\EmitterTests.cs" Link="ComponentEmitterTests\EmitterTests.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ModulesTests\ParseQSTests.cs" Link="ModulesTests\ParseQSTests.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ModulesTests\UTF8Tests.cs" Link="ModulesTests\UTF8Tests.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ParserTests\DecodeTests.cs" Link="ParserTests\DecodeTests.cs" />
-    <Compile Include="..\EngineIo.Tests.mono\ParserTests\TestsParser.cs" Link="ParserTests\TestsParser.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EngineIo.netstandard1.3\EngineIo.netstandard1.3.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ModulesTests\" />
-    <Folder Include="ParserTests\" />
-    <Folder Include="ComponentEmitterTests\" />
-    <Folder Include="ClientTests\" />
+    <ProjectReference Include="..\EngineIo\EngineIo.csproj" />
   </ItemGroup>
 
 </Project>
