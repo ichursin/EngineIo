@@ -39,7 +39,7 @@ namespace EngineIo.Client
             set
             {
                 var log = LogManager.GetLogger(Global.CallerName());
-                log.Info(string.Format("Writable: {0} sid={1}", value, this.Socket.Id));
+                log.Info(string.Format("Writable: {0} sid={1}", value, Socket.Id));
                 _writeable = value;
             }
         }
@@ -68,25 +68,25 @@ namespace EngineIo.Client
 
         protected Transport(Options options)
         {
-            this.Path = options.Path;
-            this.Hostname = options.Hostname;
-            this.Port = options.Port;
-            this.Secure = options.Secure;
-            this.Query = options.Query;
-            this.TimestampParam = options.TimestampParam;
-            this.TimestampRequests = options.TimestampRequests;
-            this.Socket = options.Socket;
-            this.Agent = options.Agent;
-            this.ForceBase64 = options.ForceBase64;
-            this.ForceJsonp = options.ForceJsonp;
-            this.Cookie = options.GetCookiesAsString();
-            this.ExtraHeaders = options.ExtraHeaders;
+            Path = options.Path;
+            Hostname = options.Hostname;
+            Port = options.Port;
+            Secure = options.Secure;
+            Query = options.Query;
+            TimestampParam = options.TimestampParam;
+            TimestampRequests = options.TimestampRequests;
+            Socket = options.Socket;
+            Agent = options.Agent;
+            ForceBase64 = options.ForceBase64;
+            ForceJsonp = options.ForceJsonp;
+            Cookie = options.GetCookiesAsString();
+            ExtraHeaders = options.ExtraHeaders;
         }
 
         protected Transport OnError(string message, Exception exception)
         {
             Exception err = new EngineIOException(message, exception);
-            this.Emit(EVENT_ERROR, err);
+            Emit(EVENT_ERROR, err);
             return this;
         }
 
@@ -106,17 +106,17 @@ namespace EngineIo.Client
 
         protected virtual void OnData(string data)
         {
-            this.OnPacket(Parser.Parser.DecodePacket(data));
+            OnPacket(Parser.Parser.DecodePacket(data));
         }
 
         protected virtual void OnData(byte[] data)
         {
-            this.OnPacket(Parser.Parser.DecodePacket(data));
+            OnPacket(Parser.Parser.DecodePacket(data));
         }
 
         protected void OnPacket(Packet packet)
         {
-            this.Emit(EVENT_PACKET, packet);
+            Emit(EVENT_PACKET, packet);
         }
 
 
@@ -127,6 +127,7 @@ namespace EngineIo.Client
                 ReadyState = ReadyStateEnum.OPENING;
                 DoOpen();
             }
+
             return this;
         }
 
@@ -181,11 +182,11 @@ namespace EngineIo.Client
             public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;
-            public Dictionary<string, string> Query;
+            public IDictionary<string, string> Query;
             public bool IgnoreServerCertificateValidation = false;
             internal Socket Socket;
-            public Dictionary<string, string> Cookies = new Dictionary<string, string>();
-            public Dictionary<string, string> ExtraHeaders = new Dictionary<string, string>();
+            public IDictionary<string, string> Cookies = new Dictionary<string, string>();
+            public IDictionary<string, string> ExtraHeaders = new Dictionary<string, string>();
 
             public string GetCookiesAsString()
             {
@@ -200,6 +201,7 @@ namespace EngineIo.Client
                     result.Append(string.Format("{0}={1}", item.Key, item.Value));
                     first = false;
                 }
+
                 return result.ToString();
             }
         }

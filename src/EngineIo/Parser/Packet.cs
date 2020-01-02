@@ -57,14 +57,14 @@ namespace EngineIo.Parser
 
         public Packet(string type, object data)
         {
-            this.Type = type;
-            this.Data = data;
+            Type = type;
+            Data = data;
         }
 
         public Packet(string type)
         {
-            this.Type = type;
-            this.Data = null;
+            Type = type;
+            Data = null;
         }
 
         internal void Encode(IEncodeCallback callback, bool utf8encode = false)
@@ -366,7 +366,7 @@ namespace EngineIo.Parser
 
             public EncodePayloadCallback(List<byte[]> results)
             {
-                this._results = results;
+                _results = results;
             }
 
             public void Call(object data)

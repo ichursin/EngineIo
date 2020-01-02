@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using EngineIo.Modules;
 using System;
+using System.Linq;
 
 namespace EngineIo.ComponentEmitter
 {
@@ -10,8 +11,8 @@ namespace EngineIo.ComponentEmitter
     /// </remarks>
     public class Emitter
     {
-        private ImmutableDictionary<string, ImmutableList<IListener>> callbacks;
-        private ImmutableDictionary<IListener, IListener> _onceCallbacks;
+        private IImmutableDictionary<string, IImmutableList<IListener>> _callbacks;
+        private IImmutableDictionary<IListener, IListener> _onceCallbacks;
 
         public Emitter()
         {
@@ -26,41 +27,45 @@ namespace EngineIo.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public virtual Emitter Emit(string eventString, params object[] args)
         {
-            //var log = LogManager.GetLogger(Global.CallerName());
-            //log.Info("Emitter emit event = " + eventString);
-            if (callbacks.ContainsKey(eventString))
+            // var log = LogManager.GetLogger(Global.CallerName());
+            // log.Info("Emitter emit event = " + eventString);
+            if (_callbacks.ContainsKey(eventString))
             {
-                ImmutableList<IListener> callbacksLocal = callbacks[eventString];
+                var callbacksLocal = _callbacks[eventString];
+
                 foreach (var fn in callbacksLocal)
                 {
                     fn.Call(args);
                 }
             }
+
             return this;
         }
 
         /// <summary>
-        ///  Listens on the event.
+        /// Listens on the event.
         /// </summary>
         /// <param name="eventString">event name</param>
         /// <param name="fn"></param>
         /// <returns>a reference to this object</returns>
         public Emitter On(string eventString, IListener fn)
         {
-            if (!callbacks.ContainsKey(eventString))
+            if (!_callbacks.ContainsKey(eventString))
             {
-                //callbacks[eventString] = ImmutableList<IListener>.Empty;
-                callbacks = callbacks.Add(eventString, ImmutableList<IListener>.Empty);
+                // callbacks[eventString] = ImmutableList<IListener>.Empty;
+                _callbacks = _callbacks.Add(eventString, ImmutableList<IListener>.Empty);
             }
-            ImmutableList<IListener> callbacksLocal = callbacks[eventString];
+
+            var callbacksLocal = _callbacks[eventString];
             callbacksLocal = callbacksLocal.Add(fn);
-            //callbacks[eventString] = callbacksLocal;
-            callbacks = callbacks.Remove(eventString).Add(eventString, callbacksLocal);
+            // callbacks[eventString] = callbacksLocal;
+            _callbacks = _callbacks.Remove(eventString).Add(eventString, callbacksLocal);
+
             return this;
         }
 
         /// <summary>
-        ///  Listens on the event.
+        /// Listens on the event.
         /// </summary>
         /// <param name="eventString">event name</param>
         /// <param name="fn"></param>
@@ -93,11 +98,10 @@ namespace EngineIo.ComponentEmitter
         public Emitter Once(string eventString, IListener fn)
         {
             var on = new OnceListener(eventString, fn, this);
-
             _onceCallbacks = _onceCallbacks.Add(fn, on);
             On(eventString, on);
-            return this;
 
+            return this;
         }
 
         /// <summary>
@@ -118,8 +122,9 @@ namespace EngineIo.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public Emitter Off()
         {
-            callbacks = ImmutableDictionary.Create<string, ImmutableList<IListener>>();
+            _callbacks = ImmutableDictionary.Create<string, IImmutableList<IListener>>();
             _onceCallbacks = ImmutableDictionary.Create<IListener, IListener>();
+
             return this;
         }
 
@@ -132,7 +137,7 @@ namespace EngineIo.ComponentEmitter
         {
             try
             {
-                if (!callbacks.TryGetValue(eventString, out ImmutableList<IListener> retrievedValue))
+                if (!_callbacks.TryGetValue(eventString, out IImmutableList<IListener> retrievedValue))
                 {
                     var log = LogManager.GetLogger(Global.CallerName());
                     log.Info(string.Format("Emitter.Off Could not remove {0}", eventString));
@@ -140,7 +145,7 @@ namespace EngineIo.ComponentEmitter
 
                 if (retrievedValue != null)
                 {
-                    callbacks = callbacks.Remove(eventString);
+                    _callbacks = _callbacks.Remove(eventString);
 
                     foreach (var listener in retrievedValue)
                     {
@@ -166,22 +171,19 @@ namespace EngineIo.ComponentEmitter
         {
             try
             {
-                if (callbacks.ContainsKey(eventString))
+                if (_callbacks.ContainsKey(eventString))
                 {
-                    ImmutableList<IListener> callbacksLocal = callbacks[eventString];
-                    IListener offListener;
-                    _onceCallbacks.TryGetValue(fn, out offListener);
+                    var callbacks = _callbacks[eventString];
+                    _onceCallbacks.TryGetValue(fn, out IListener offListener);
                     _onceCallbacks = _onceCallbacks.Remove(fn);
 
-
-                    if (callbacksLocal.Count > 0 && callbacksLocal.Contains(offListener ?? fn))
+                    if (callbacks.Count > 0 && callbacks.Contains(offListener ?? fn))
                     {
-                        callbacksLocal = callbacksLocal.Remove(offListener ?? fn);
-                        callbacks = callbacks.Remove(eventString);
-                        callbacks = callbacks.Add(eventString, callbacksLocal);
+                        callbacks = callbacks.Remove(offListener ?? fn);
+                        _callbacks = _callbacks.Remove(eventString);
+                        _callbacks = _callbacks.Add(eventString, callbacks);
                     }
                 }
-
             }
             catch (Exception)
             {
@@ -196,12 +198,12 @@ namespace EngineIo.ComponentEmitter
         /// </summary>
         /// <param name="eventString">an event name.</param>
         /// <returns>a reference to this object</returns>
-        public ImmutableList<IListener> Listeners(string eventString)
+        public IImmutableList<IListener> Listeners(string eventString)
         {
-            if (callbacks.ContainsKey(eventString))
+            if (_callbacks.ContainsKey(eventString))
             {
-                ImmutableList<IListener> callbacksLocal = callbacks[eventString];
-                return callbacksLocal ?? ImmutableList<IListener>.Empty;
+                var callbacks = _callbacks[eventString];
+                return callbacks ?? ImmutableList<IListener>.Empty;
             }
 
             return ImmutableList<IListener>.Empty;

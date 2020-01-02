@@ -25,7 +25,7 @@ namespace EngineIo_Tests.ClientTests
             socket.Open();
             _manualResetEvent.WaitOne();
             socket.Close();
-            Assert.Equal("hi", this.Message);
+            Assert.Equal("hi", Message);
         }
 
         public class TestListener : IListener
@@ -73,7 +73,7 @@ namespace EngineIo_Tests.ClientTests
         public void ConnectToLocalhost2()
         {
             _manualResetEvent = new ManualResetEvent(false);
-            this.Message = "";
+            Message = "";
 
             var options = CreateOptions();
             options.Transports = ImmutableList.Create<string>(Polling.NAME);
@@ -90,14 +90,14 @@ namespace EngineIo_Tests.ClientTests
                 var data = (string)d;
 
                 //log.Info("message2 = " + data);
-                this.Message = data;
+                Message = data;
                 _manualResetEvent.Set();
             });
 
             socket.Open();
             _manualResetEvent.WaitOne();
             socket.Close();
-            Assert.Equal("hi", this.Message);
+            Assert.Equal("hi", Message);
         }
 
         [Fact]
@@ -125,15 +125,15 @@ namespace EngineIo_Tests.ClientTests
                     return;
                 }
 
-                this.Message = data;
+                Message = data;
                 _manualResetEvent.Set();
             });
 
             socket.Open();
             _manualResetEvent.WaitOne();
             socket.Close();
-            //log.Info("TestmultibyteUtf8StringsWithPolling this.Message = " + this.Message);
-            Assert.Equal(SendMessage, this.Message);
+            //log.Info("TestmultibyteUtf8StringsWithPolling Message = " + Message);
+            Assert.Equal(SendMessage, Message);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace EngineIo_Tests.ClientTests
                     return;
                 }
 
-                this.Message = data;
+                Message = data;
                 _manualResetEvent.Set();
             });
 
@@ -171,7 +171,7 @@ namespace EngineIo_Tests.ClientTests
             _manualResetEvent.WaitOne();
             socket.Close();
 
-            Assert.True(SendMessage == this.Message);
+            Assert.True(SendMessage == Message);
         }
 
         [Fact]

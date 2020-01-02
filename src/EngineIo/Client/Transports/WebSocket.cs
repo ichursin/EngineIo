@@ -8,7 +8,7 @@ namespace EngineIo.Client.Transports
 {
     public class WebSocket : Transport
     {
-        public static readonly string NAME = "websocket";
+        public const string NAME = "websocket";
 
         private WebSocket4Net.WebSocket ws;
         private List<KeyValuePair<string, string>> Cookies;
@@ -33,9 +33,9 @@ namespace EngineIo.Client.Transports
         protected override void DoOpen()
         {
             var log = LogManager.GetLogger(Global.CallerName());
-            log.Info("DoOpen uri =" + this.Uri());
+            log.Info("DoOpen uri =" + Uri());
 
-            ws = new WebSocket4Net.WebSocket(this.Uri(), "", Cookies, MyExtraHeaders)
+            ws = new WebSocket4Net.WebSocket(Uri(), "", Cookies, MyExtraHeaders)
             {
                 EnableAutoSendPing = false
             };
@@ -61,14 +61,14 @@ namespace EngineIo.Client.Transports
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_DataReceived " + e.Data);
-            this.OnData(e.Data);
+            OnData(e.Data);
         }
 
         private void ws_Opened(object sender, EventArgs e)
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_Opened " + ws.SupportBinary);
-            this.OnOpen();
+            OnOpen();
         }
 
         void ws_Closed(object sender, EventArgs e)
@@ -80,19 +80,19 @@ namespace EngineIo.Client.Transports
             ws.MessageReceived -= ws_MessageReceived;
             ws.DataReceived -= ws_DataReceived;
             ws.Error -= ws_Error;
-            this.OnClose();
+            OnClose();
         }
 
         void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("ws_MessageReceived e.Message= " + e.Message);
-            this.OnData(e.Message);
+            OnData(e.Message);
         }
 
         void ws_Error(object sender, SuperSocket.ClientEngine.ErrorEventArgs e)
         {
-            this.OnError("websocket error", e.Exception);
+            OnError("websocket error", e.Exception);
         }
 
         protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
@@ -118,7 +118,7 @@ namespace EngineIo.Client.Transports
 
             public WriteEncodeCallback(WebSocket webSocket)
             {
-                this.webSocket = webSocket;
+                webSocket = webSocket;
             }
 
             public void Call(object data)
@@ -168,21 +168,21 @@ namespace EngineIo.Client.Transports
         public string Uri()
         {
             Dictionary<string, string> query = null;
-            query = this.Query == null ? new Dictionary<string, string>() : new Dictionary<string, string>(this.Query);
-            var schema = this.Secure ? "wss" : "ws";
+            query = Query == null ? new Dictionary<string, string>() : new Dictionary<string, string>(Query);
+            var schema = Secure ? "wss" : "ws";
             var portString = "";
 
-            if (this.TimestampRequests)
+            if (TimestampRequests)
             {
-                query.Add(this.TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
+                query.Add(TimestampParam, DateTime.Now.Ticks.ToString() + "-" + Transport.Timestamps++);
             }
 
             var _query = ParseQS.Encode(query);
 
-            if (this.Port > 0 && (("wss" == schema && this.Port != 443)
-                    || ("ws" == schema && this.Port != 80)))
+            if (Port > 0 && (("wss" == schema && Port != 443)
+                    || ("ws" == schema && Port != 80)))
             {
-                portString = ":" + this.Port;
+                portString = ":" + Port;
             }
 
             if (_query.Length > 0)
@@ -190,7 +190,7 @@ namespace EngineIo.Client.Transports
                 _query = "?" + _query;
             }
 
-            return schema + "://" + this.Hostname + portString + this.Path + _query;
+            return schema + "://" + Hostname + portString + Path + _query;
         }
     }
 }

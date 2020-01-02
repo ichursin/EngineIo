@@ -10,7 +10,8 @@ namespace EngineIo.Client.Transports
 {
     public class Polling : Transport
     {
-        public static readonly string NAME = "polling";
+        public const string NAME = "polling";
+
         public static readonly string EVENT_POLL = "poll";
         public static readonly string EVENT_POLL_COMPLETE = "pollComplete";
 
@@ -293,7 +294,7 @@ namespace EngineIo.Client.Transports
 
         public string Uri()
         {
-            //var query = this.Query;
+            //var query = Query;
             var query = new Dictionary<string, string>(Query);
             //if (Query == null)
             //{

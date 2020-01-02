@@ -61,7 +61,7 @@ namespace EngineIo.Client
         private IDictionary<string, string> Query;
         private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
         private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
-        private Dictionary<string, string> Cookies = new Dictionary<string, string>();
+        private IDictionary<string, string> Cookies = new Dictionary<string, string>();
         /*package*/
         public Transport Transport;
         private EasyTimer PingTimeoutTimer;
@@ -72,7 +72,7 @@ namespace EngineIo.Client
         private bool ForceBase64 = false;
         private bool ForceJsonp = false;
 
-        public Dictionary<string, string> ExtraHeaders;
+        public IDictionary<string, string> ExtraHeaders;
 
 
         //public static void SetupLog4Net()
@@ -140,7 +140,9 @@ namespace EngineIo.Client
             Secure = options.Secure;
             Hostname = options.Hostname;
             Port = options.Port;
-            Query = options.QueryString != null ? ParseQS.Decode(options.QueryString) : new Dictionary<string, string>();
+            Query = !string.IsNullOrEmpty(options.QueryString)
+                ? ParseQS.Decode(options.QueryString)
+                : new Dictionary<string, string>();
 
             if (options.Query != null)
             {
@@ -193,13 +195,17 @@ namespace EngineIo.Client
 
         private Transport CreateTransport(string name)
         {
-            var query = new Dictionary<string, string>(Query);
-            query.Add("EIO", Parser.Parser.Protocol.ToString());
-            query.Add("transport", name);
+            var query = new Dictionary<string, string>(Query)
+            {
+                { "EIO", Parser.Parser.Protocol.ToString() },
+                { "transport", name }
+            };
+
             if (Id != null)
             {
                 query.Add("sid", Id);
             }
+
             var options = new Transport.Options
             {
                 Hostname = Hostname,
@@ -211,23 +217,22 @@ namespace EngineIo.Client
                 TimestampParam = TimestampParam,
                 PolicyPort = PolicyPort,
                 Socket = this,
-                Agent = this.Agent,
-                ForceBase64 = this.ForceBase64,
-                ForceJsonp = this.ForceJsonp,
-                Cookies = this.Cookies,
-                ExtraHeaders = this.ExtraHeaders
+                Agent = Agent,
+                ForceBase64 = ForceBase64,
+                ForceJsonp = ForceJsonp,
+                Cookies = Cookies,
+                ExtraHeaders = ExtraHeaders
             };
 
-            if (name == WebSocket.NAME)
+            switch (name)
             {
-                return new WebSocket(options);
+                case WebSocket.NAME:
+                    return new WebSocket(options);
+                case Polling.NAME:
+                    return new PollingXHR(options);
+                default:
+                    throw new EngineIOException("CreateTransport failed");
             }
-            else if (name == Polling.NAME)
-            {
-                return new PollingXHR(options);
-            }
-
-            throw new EngineIOException("CreateTransport failed");
         }
 
         private void SetTransport(Transport transport)
@@ -235,10 +240,10 @@ namespace EngineIo.Client
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info(string.Format("SetTransport setting transport '{0}'", transport.Name));
 
-            if (this.Transport != null)
+            if (Transport != null)
             {
                 log.Info(string.Format("SetTransport clearing existing transport '{0}'", transport.Name));
-                this.Transport.Off();
+                Transport.Off();
             }
 
             Transport = transport;
@@ -371,11 +376,11 @@ namespace EngineIo.Client
             //var log = LogManager.GetLogger(Global.CallerName());
             //log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
-            for (int i = 0; i < this.PrevBufferLen; i++)
+            for (int i = 0; i < PrevBufferLen; i++)
             {
                 try
                 {
-                    var callback = this.CallbackBuffer[i];
+                    var callback = CallbackBuffer[i];
                     if (callback != null)
                     {
                         callback();
@@ -403,16 +408,16 @@ namespace EngineIo.Client
             }
 
 
-            this.PrevBufferLen = 0;
+            PrevBufferLen = 0;
             //log.Info(string.Format("OnDrain3 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
-            if (this.WriteBuffer.Count == 0)
+            if (WriteBuffer.Count == 0)
             {
-                this.Emit(EVENT_DRAIN);
+                Emit(EVENT_DRAIN);
             }
             else
             {
-                this.Flush();
+                Flush();
             }
         }
 
@@ -421,7 +426,7 @@ namespace EngineIo.Client
             var log = LogManager.GetLogger(Global.CallerName());
 
             log.Info(string.Format("ReadyState={0} Transport.Writeable={1} Upgrading={2} WriteBuffer.Count={3}", ReadyState, Transport.Writable, Upgrading, WriteBuffer.Count));
-            if (ReadyState != ReadyStateEnum.CLOSED && this.Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
+            if (ReadyState != ReadyStateEnum.CLOSED && Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
             {
                 log.Info(string.Format("Flush {0} packets in socket", WriteBuffer.Count));
                 PrevBufferLen = WriteBuffer.Count;
@@ -455,7 +460,7 @@ namespace EngineIo.Client
                 }
                 else if (packet.Type == Packet.PONG)
                 {
-                    this.SetPing();
+                    SetPing();
                 }
                 else if (packet.Type == Packet.ERROR)
                 {
@@ -463,7 +468,7 @@ namespace EngineIo.Client
                     {
                         code = packet.Data
                     };
-                    this.Emit(EVENT_ERROR, err);
+                    Emit(EVENT_ERROR, err);
                 }
                 else if (packet.Type == Packet.MESSAGE)
                 {
@@ -490,14 +495,14 @@ namespace EngineIo.Client
             PingTimeout = handshakeData.PingTimeout;
             OnOpen();
             // In case open handler closes socket
-            if (ReadyStateEnum.CLOSED == this.ReadyState)
+            if (ReadyStateEnum.CLOSED == ReadyState)
             {
                 return;
             }
-            this.SetPing();
+            SetPing();
 
-            this.Off(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
-            this.On(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
+            Off(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
+            On(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
 
         }
 
@@ -527,7 +532,7 @@ namespace EngineIo.Client
         {
             //var log = LogManager.GetLogger(Global.CallerName());
 
-            if (this.PingIntervalTimer != null)
+            if (PingIntervalTimer != null)
             {
                 PingIntervalTimer.Stop();
             }
@@ -665,7 +670,7 @@ namespace EngineIo.Client
             Emit(EVENT_OPEN);
 
             if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport is Polling)
-            //if (ReadyState == ReadyStateEnum.OPEN && Upgrade && this.Transport)
+            //if (ReadyState == ReadyStateEnum.OPEN && Upgrade && Transport)
             {
                 log.Info("OnOpen starting upgrade probes");
                 _errorCount = 0;
@@ -725,8 +730,8 @@ namespace EngineIo.Client
             parameters.Transport[0].Once(Transport.EVENT_ERROR, onError);
             parameters.Transport[0].Once(Transport.EVENT_CLOSE, onTransportClose);
 
-            this.Once(EVENT_CLOSE, onClose);
-            this.Once(EVENT_UPGRADING, onUpgrade);
+            Once(EVENT_CLOSE, onClose);
+            Once(EVENT_UPGRADING, onUpgrade);
 
             parameters.Transport[0].Open();
         }
@@ -747,7 +752,7 @@ namespace EngineIo.Client
 
             public OnTransportOpenListener(ProbeParameters parameters)
             {
-                this.Parameters = parameters;
+                Parameters = parameters;
             }
 
             void IListener.Call(params object[] args)
@@ -1013,11 +1018,11 @@ namespace EngineIo.Client
 
         public Socket Close()
         {
-            if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
+            if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
                 var log = LogManager.GetLogger(Global.CallerName());
                 log.Info("Start");
-                this.OnClose("forced close");
+                OnClose("forced close");
 
                 log.Info("socket closing - telling transport to close");
                 Transport.Close();
@@ -1028,20 +1033,20 @@ namespace EngineIo.Client
 
         private void OnClose(string reason, Exception desc = null)
         {
-            if (this.ReadyState == ReadyStateEnum.OPENING || this.ReadyState == ReadyStateEnum.OPEN)
+            if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
                 var log = LogManager.GetLogger(Global.CallerName());
 
                 log.Info(string.Format("OnClose socket close with reason: {0}", reason));
 
                 // clear timers
-                if (this.PingIntervalTimer != null)
+                if (PingIntervalTimer != null)
                 {
-                    this.PingIntervalTimer.Stop();
+                    PingIntervalTimer.Stop();
                 }
-                if (this.PingTimeoutTimer != null)
+                if (PingTimeoutTimer != null)
                 {
-                    this.PingTimeoutTimer.Stop();
+                    PingTimeoutTimer.Stop();
                 }
 
 
@@ -1057,26 +1062,26 @@ namespace EngineIo.Client
                 }, 1);
 
 
-                if (this.Transport != null)
+                if (Transport != null)
                 {
                     // stop event from firing again for transport
-                    this.Transport.Off(EVENT_CLOSE);
+                    Transport.Off(EVENT_CLOSE);
 
                     // ensure transport won't stay open
-                    this.Transport.Close();
+                    Transport.Close();
 
                     // ignore further transport communication
-                    this.Transport.Off();
+                    Transport.Off();
                 }
 
                 // set ready state
-                this.ReadyState = ReadyStateEnum.CLOSED;
+                ReadyState = ReadyStateEnum.CLOSED;
 
                 // clear session id
-                this.Id = null;
+                Id = null;
 
                 // emit close events
-                this.Emit(EVENT_CLOSE, reason, desc);
+                Emit(EVENT_CLOSE, reason, desc);
             }
         }
 
@@ -1097,7 +1102,7 @@ namespace EngineIo.Client
 
         internal void OnHeartbeat(long timeout)
         {
-            if (this.PingTimeoutTimer != null)
+            if (PingTimeoutTimer != null)
             {
                 PingTimeoutTimer.Stop();
                 PingTimeoutTimer = null;
@@ -1105,7 +1110,7 @@ namespace EngineIo.Client
 
             if (timeout <= 0)
             {
-                timeout = this.PingInterval + this.PingTimeout;
+                timeout = PingInterval + PingTimeout;
             }
 
             PingTimeoutTimer = EasyTimer.SetTimeout(() =>

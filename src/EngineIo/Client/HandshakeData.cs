@@ -7,7 +7,7 @@ namespace EngineIo.Client
     public class HandshakeData
     {
         public string Sid;
-        public ImmutableList<string> Upgrades = ImmutableList<string>.Empty;
+        public IImmutableList<string> Upgrades = ImmutableList<string>.Empty;
         public long PingInterval;
         public long PingTimeout;
 

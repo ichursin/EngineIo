@@ -1,12 +1,9 @@
-# THIS PROJECT IS DEPRECATED
-Component is not maintained anymore. See https://github.com/Quobject/EngineIoClientDotNet/issues/69 for more information.
-
-#### EngineIoClientDotNet
+#### EngineIo
 ====================
 
-Engine.IO Client Library for .Net
+EngineIo Client Library for .Net
 
-This is the Engine.IO Client Library for C#, which is ported from the [JavaScript client](https://github.com/Automattic/engine.io-client).
+This is the EngineIo Client Library for C#, which is ported from the [JavaScript client](https://github.com/Automattic/engine.io-client).
 
 
 ##### Installation
@@ -52,12 +49,8 @@ socket.Open();
 This library supports all of the features the JS client does, including events, options and upgrading transport.
 
 
-
 ## Framework Versions
-.NETFramework v3.5, .NETFramework v4.0, .NETFramework v4.5
-
+.NETStandart1.3
 
 ## License
-
 [MIT](http://opensource.org/licenses/MIT)
-

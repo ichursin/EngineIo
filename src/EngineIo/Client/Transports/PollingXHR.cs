@@ -192,7 +192,7 @@ namespace EngineIo.Client.Transports
 
             public DoPollEventErrorListener(PollingXHR pollingXHR)
             {
-                this.pollingXHR = pollingXHR;
+                pollingXHR = pollingXHR;
             }
 
             public void Call(params object[] args)
@@ -302,38 +302,38 @@ namespace EngineIo.Client.Transports
 
             private void OnSuccess()
             {
-                this.Emit(EVENT_SUCCESS);
+                Emit(EVENT_SUCCESS);
             }
 
             private void OnData(string data)
             {
                 //var log = LogManager.GetLogger(Global.CallerName());
                 //log.Info("OnData string = " + data);
-                this.Emit(EVENT_DATA, data);
-                this.OnSuccess();
+                Emit(EVENT_DATA, data);
+                OnSuccess();
             }
 
             private void OnData(byte[] data)
             {
                 //var log = LogManager.GetLogger(Global.CallerName());
                 //log.Info(string.Format("OnData byte[] ={0}", System.Text.Encoding.UTF8.GetString(data, 0, data.Length)));
-                this.Emit(EVENT_DATA, data);
-                this.OnSuccess();
+                Emit(EVENT_DATA, data);
+                OnSuccess();
             }
 
             private void OnError(Exception err)
             {
-                this.Emit(EVENT_ERROR, err);
+                Emit(EVENT_ERROR, err);
             }
 
-            private void OnRequestHeaders(Dictionary<string, string> headers)
+            private void OnRequestHeaders(IDictionary<string, string> headers)
             {
-                this.Emit(EVENT_REQUEST_HEADERS, headers);
+                Emit(EVENT_REQUEST_HEADERS, headers);
             }
 
-            private void OnResponseHeaders(Dictionary<string, string> headers)
+            private void OnResponseHeaders(IDictionary<string, string> headers)
             {
-                this.Emit(EVENT_RESPONSE_HEADERS, headers);
+                Emit(EVENT_RESPONSE_HEADERS, headers);
             }
 
             public class RequestOptions
