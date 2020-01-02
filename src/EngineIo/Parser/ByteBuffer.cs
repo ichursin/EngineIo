@@ -11,26 +11,18 @@ namespace EngineIo.Parser
 
         public ByteBuffer(int length)
         {
-            this._memoryStream = new MemoryStream();
+            _memoryStream = new MemoryStream();
+
             _memoryStream.SetLength(length);
             _memoryStream.Capacity = length;
             _limit = length;
         }
 
-        public static ByteBuffer Allocate(int length)
-        {
-            return new ByteBuffer(length);
-        }
+        public static ByteBuffer Allocate(int length) => new ByteBuffer(length);
 
-        internal void Put(byte[] buf)
-        {
-            _memoryStream.Write(buf, 0, buf.Length);
-        }
+        internal void Put(byte[] buf) => _memoryStream.Write(buf, 0, buf.Length);
 
-        internal byte[] Array()
-        {
-            return _memoryStream.ToArray();
-        }
+        internal byte[] Array() => _memoryStream.ToArray();
 
         internal static ByteBuffer Wrap(byte[] data)
         {
@@ -43,10 +35,7 @@ namespace EngineIo.Parser
         /// A buffer's capacity is the number of elements it contains. The capacity of a 
         /// buffer is never negative and never changes.
         /// </summary>
-        public int Capacity
-        {
-            get { return _memoryStream.Capacity; }
-        }
+        public int Capacity => _memoryStream.Capacity;
 
         /// <summary>
         /// Absolute get method. Reads the byte at the given index.
@@ -101,14 +90,11 @@ namespace EngineIo.Parser
         /// </summary>
         /// <param name="dst"></param>
         /// <returns>This buffer</returns>
-        internal ByteBuffer Get(byte[] dst)
-        {
-            return Get(dst, 0, dst.Length);
-        }
+        internal ByteBuffer Get(byte[] dst) => Get(dst, 0, dst.Length);
 
         /// <summary>
         /// Sets this buffer's position. If the mark is defined and larger than the new 
-        /// position then it is discarded.       
+        /// position then it is discarded.
         /// </summary>
         /// <param name="newPosition">The new position value; must be non-negative and no larger than the current limit</param>
         internal void Position(long newPosition)
@@ -136,10 +122,7 @@ namespace EngineIo.Parser
         /// Returns the number of elements between the current position and the limit.
         /// </summary>
         /// <returns>The number of elements remaining in this buffer</returns>
-        internal long Remaining()
-        {
-            return (_limit - _memoryStream.Position);
-        }
+        internal long Remaining() => _limit - _memoryStream.Position;
 
         /// <summary>
         /// Clears this buffer. The position is set to zero, the limit is set to the capacity, and the mark is discarded.
