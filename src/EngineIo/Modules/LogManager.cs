@@ -70,7 +70,6 @@ namespace EngineIo.Modules
             var msg1 = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")} [{""}] {MyType} - {msg}";
             //            System.Threading.Thread.CurrentThread.ManagedThreadId);
             LogManager.file.WriteLine(msg1);
-
         }
 
         [Conditional("DEBUG")]

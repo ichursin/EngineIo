@@ -29,7 +29,7 @@ namespace EngineIo.Tests.ClientTests
                 Port = ConnectionConstants.SSL_PORT,
                 Hostname = ConnectionConstants.HOSTNAME,
                 //log.Info("Please add to your hosts file: 127.0.0.1 " + options.Hostname);
-                Secure = true,
+                IsSecure = true,
                 IgnoreServerCertificateValidation = true
             };
             return options;

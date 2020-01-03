@@ -25,10 +25,10 @@ namespace EngineIo.Parser
 
         private static readonly int MAX_INT_CHAR_LENGTH = int.MaxValue.ToString().Length;
 
-        //TODO: suport binary?
+        // TODO: suport binary?
         private bool SupportsBinary = false;
 
-        private static readonly Dictionary<string, byte> _packets = new Dictionary<string, byte>()
+        private static readonly IDictionary<string, byte> _packets = new Dictionary<string, byte>()
         {
             {OPEN, 0},
             {CLOSE, 1},
@@ -39,7 +39,7 @@ namespace EngineIo.Parser
             {NOOP, 6}
         };
 
-        private static readonly Dictionary<byte, string> _packetsList = new Dictionary<byte, string>();
+        private static readonly IDictionary<byte, string> _packetsList = new Dictionary<byte, string>();
 
         static Packet()
         {
@@ -92,30 +92,32 @@ namespace EngineIo.Parser
 
         private void EncodeBase64Packet(IEncodeCallback callback)
         {
-            var byteData = Data as byte[];
-            if (byteData != null)
+            if (Data is byte[] byteData)
             {
                 var result = new StringBuilder();
                 result.Append("b");
                 result.Append(_packets[Type]);
                 result.Append(Convert.ToBase64String(byteData));
                 callback.Call(result.ToString());
+
                 return;
             }
-            throw new Exception("byteData == null");
+
+            throw new Exception("byteData is null");
         }
 
         private void EncodeByteArray(IEncodeCallback callback)
         {
-            var byteData = Data as byte[];
-            if (byteData != null)
+            if (Data is byte[] byteData)
             {
                 var resultArray = new byte[1 + byteData.Length];
                 resultArray[0] = _packets[Type];
                 Array.Copy(byteData, 0, resultArray, 1, byteData.Length);
                 callback.Call(resultArray);
+
                 return;
             }
+
             throw new Exception("byteData == null");
         }
 
@@ -140,7 +142,6 @@ namespace EngineIo.Parser
                 }
                 catch (Exception)
                 {
-
                     return _err;
                 }
             }
@@ -286,7 +287,7 @@ namespace EngineIo.Parser
                 for (int i = 1; ; i++)
                 {
                     int b = bufferTail.Get(i + bufferTail_offset) & 0xFF;
-                    if (b == 255)
+                    if (b == 0xFF)
                     {
                         break;
                     }
@@ -341,7 +342,6 @@ namespace EngineIo.Parser
 
         }
 
-
         internal static byte[] StringToByteArray(string str)
         {
             int len = str.Length;
@@ -376,12 +376,12 @@ namespace EngineIo.Parser
                     var packet = (string)data;
                     var encodingLength = packet.Length.ToString();
                     var sizeBuffer = new byte[encodingLength.Length + 2];
-                    sizeBuffer[0] = (byte)0; // is a string
+                    sizeBuffer[0] = 0; // is a string
                     for (var i = 0; i < encodingLength.Length; i++)
                     {
                         sizeBuffer[i + 1] = byte.Parse(encodingLength.Substring(i, 1));
                     }
-                    sizeBuffer[sizeBuffer.Length - 1] = (byte)255;
+                    sizeBuffer[sizeBuffer.Length - 1] = byte.MaxValue;
                     _results.Add(Buffer.Concat(new byte[][] { sizeBuffer, StringToByteArray(packet) }));
                     return;
                 }

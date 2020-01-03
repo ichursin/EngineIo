@@ -30,7 +30,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = Connection.CreateOptions().Hostname,
-                Secure = false,
+                IsSecure = false,
                 Query = new Dictionary<string, string> { { "sid", "test" } },
                 TimestampRequests = false
             };
@@ -46,7 +46,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = Connection.CreateOptions().Hostname,
-                Secure = false,
+                IsSecure = false,
                 Query = new Dictionary<string, string> { { "sid", "test" } },
                 TimestampRequests = false,
                 Port = 80
@@ -64,7 +64,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = Connection.CreateOptions().Hostname,
-                Secure = false,
+                IsSecure = false,
                 Query = new Dictionary<string, string> { { "sid", "test" } },
                 TimestampRequests = false,
                 Port = 3000
@@ -82,7 +82,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = Connection.CreateOptions().Hostname,
-                Secure = true,
+                IsSecure = true,
                 Query = new Dictionary<string, string> { { "sid", "test" } },
                 TimestampRequests = false,
                 Port = 443
@@ -100,7 +100,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = "test",
-                Secure = false,
+                IsSecure = false,
                 Query = new Dictionary<string, string> { { "sid", "test" } },
                 TimestampRequests = true,
                 TimestampParam = "t"
@@ -122,7 +122,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = "test",
-                Secure = false,
+                IsSecure = false,
                 Query = new Dictionary<string, string> { { "transport", "websocket" } },
                 TimestampRequests = false
             };
@@ -137,7 +137,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = "test",
-                Secure = true,
+                IsSecure = true,
                 Query = new Dictionary<string, string> { { "transport", "websocket" } },
                 TimestampRequests = false
             };
@@ -152,7 +152,7 @@ namespace EngineIo.Tests.ClientTests
             {
                 Path = "/engine.io",
                 Hostname = "test",
-                Secure = false,
+                IsSecure = false,
                 Query = new Dictionary<string, string> { { "sid", "test" } },
                 TimestampRequests = true,
                 TimestampParam = "woot"

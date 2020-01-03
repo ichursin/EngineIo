@@ -49,7 +49,7 @@ namespace EngineIo.Client
         public string Name;
         public IDictionary<string, string> Query;
 
-        protected bool Secure;
+        protected bool IsSecure;
         protected bool TimestampRequests;
         protected int Port;
         protected string Path;
@@ -71,7 +71,7 @@ namespace EngineIo.Client
             Path = options.Path;
             Hostname = options.Hostname;
             Port = options.Port;
-            Secure = options.Secure;
+            IsSecure = options.IsSecure;
             Query = options.Query;
             TimestampParam = options.TimestampParam;
             TimestampRequests = options.TimestampRequests;
@@ -177,7 +177,7 @@ namespace EngineIo.Client
             public string Hostname;
             public string Path;
             public string TimestampParam;
-            public bool Secure = false;
+            public bool IsSecure = false;
             public bool TimestampRequests = true;
             public int Port;
             public int PolicyPort;

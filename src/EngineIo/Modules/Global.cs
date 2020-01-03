@@ -22,8 +22,10 @@ namespace EngineIo.Modules
 
         public static string CallerName([CallerMemberName]string caller = "", [CallerLineNumber]int number = 0, [CallerFilePath]string path = "")
         {
-            var s = path.Split('\\');
-            var fileName = s.LastOrDefault();
+            var fileName = path
+                .Split('\\')
+                .LastOrDefault();
+
             if (path.Contains("SocketIo.Tests"))
             {
                 path = "SocketIo.Tests";
@@ -32,12 +34,16 @@ namespace EngineIo.Modules
             {
                 path = "SocketIo";
             }
+            else if (path.Contains("EngineIo.Tests"))
+            {
+                path = "EngineIo.Tests";
+            }
             else if (path.Contains("EngineIo"))
             {
                 path = "EngineIo";
             }
 
-            return string.Format("{0}-{1}:{2}#{3}", path, fileName, caller, number);
+            return $"{path}-{fileName}:{caller}#{number}";
         }
 
         // from http://stackoverflow.com/questions/8767103/how-to-remove-invalid-code-points-from-a-string

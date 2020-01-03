@@ -177,7 +177,7 @@ namespace EngineIo.Client.Transports
         public string Uri()
         {
             var query = Query ?? new Dictionary<string, string>();
-            var schema = Secure ? "wss" : "ws";
+            var schema = IsSecure ? "wss" : "ws";
             var portString = "";
 
             if (TimestampRequests)

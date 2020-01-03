@@ -297,7 +297,7 @@ namespace EngineIo.Client.Transports
             //{
             //    query = new Dictionary<string, string>();
             //}
-            string schema = Secure ? "https" : "http";
+            string schema = IsSecure ? "https" : "http";
             string portString = "";
 
             if (TimestampRequests)

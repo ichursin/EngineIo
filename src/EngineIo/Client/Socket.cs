@@ -42,7 +42,7 @@ namespace EngineIo.Client
         public static bool PriorWebsocketSuccess = false;
 
 
-        private bool Secure;
+        private bool IsSecure;
         private bool Upgrade;
         private bool TimestampRequests = true;
         private bool Upgrading;
@@ -137,7 +137,7 @@ namespace EngineIo.Client
                 }
             }
 
-            Secure = options.Secure;
+            IsSecure = options.IsSecure;
             Hostname = options.Hostname;
             Port = options.Port;
             Query = !string.IsNullOrEmpty(options.QueryString)
@@ -215,7 +215,7 @@ namespace EngineIo.Client
             {
                 Hostname = Hostname,
                 Port = Port,
-                Secure = Secure,
+                IsSecure = IsSecure,
                 Path = Path,
                 Query = query,
                 TimestampRequests = TimestampRequests,
@@ -243,11 +243,11 @@ namespace EngineIo.Client
         private void SetTransport(Transport transport)
         {
             var log = LogManager.GetLogger(Global.CallerName());
-            log.Info(string.Format("SetTransport setting transport '{0}'", transport.Name));
+            log.Info($"SetTransport setting transport '{transport.Name}'");
 
             if (Transport != null)
             {
-                log.Info(string.Format("SetTransport clearing existing transport '{0}'", transport.Name));
+                log.Info($"SetTransport clearing existing transport '{transport.Name}'");
                 Transport.Off();
             }
 
@@ -360,7 +360,7 @@ namespace EngineIo.Client
                 }
 
                 opts.Host = uri.Host;
-                opts.Secure = uri.Scheme == "https" || uri.Scheme == "wss";
+                opts.IsSecure = uri.Scheme == "https" || uri.Scheme == "wss";
                 opts.Port = uri.Port;
 
                 if (!string.IsNullOrEmpty(uri.Query))
