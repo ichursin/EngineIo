@@ -31,11 +31,11 @@ namespace EngineIo.ComponentEmitter
             // log.Info("Emitter emit event = " + eventString);
             if (_callbacks.ContainsKey(eventString))
             {
-                var callbacksLocal = _callbacks[eventString];
+                var listeners = _callbacks[eventString];
 
-                foreach (var fn in callbacksLocal)
+                foreach (var listener in listeners)
                 {
-                    fn.Call(args);
+                    listener.Call(args);
                 }
             }
 

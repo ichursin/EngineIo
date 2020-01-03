@@ -167,8 +167,7 @@ namespace EngineIo.Client
 
         protected abstract void DoClose();
 
-        protected abstract void Write(ImmutableList<Packet> packets);
-
+        protected abstract void Write(IList<Packet> packets);
 
         public class Options
         {

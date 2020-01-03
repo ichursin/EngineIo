@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
+using System.Net.Http.Headers;
 
 namespace EngineIo.Client.Transports
 {
@@ -251,7 +252,7 @@ namespace EngineIo.Client.Transports
                                 {
                                     if (Method == "POST")
                                     {
-                                        httpContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                                        httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                                     }
 
                                     var request = new HttpRequestMessage(httpMethod, Uri)
@@ -263,6 +264,7 @@ namespace EngineIo.Client.Transports
                                     {
                                         httpContent.Headers.Add(@"Cookie", CookieHeaderValue);
                                     }
+
                                     if (ExtraHeaders != null)
                                     {
                                         foreach (var header in ExtraHeaders)
@@ -290,8 +292,6 @@ namespace EngineIo.Client.Transports
 
                                     }
                                 }
-
-
                             }
                         }
                     }

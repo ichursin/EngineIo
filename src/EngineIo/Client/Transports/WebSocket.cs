@@ -105,7 +105,7 @@ namespace EngineIo.Client.Transports
             OnError("websocket error", e.Exception);
         }
 
-        protected override void Write(System.Collections.Immutable.ImmutableList<Parser.Packet> packets)
+        protected override void Write(IList<Packet> packets)
         {
             Writable = false;
 

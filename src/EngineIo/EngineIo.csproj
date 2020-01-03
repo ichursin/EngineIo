@@ -10,14 +10,14 @@
     <RepositoryUrl>https://github.com/ichursin/EngineIo/</RepositoryUrl>
     <AssemblyVersion>1.0.2.0</AssemblyVersion>
     <FileVersion>1.0.2.0</FileVersion>
-    <RootNamespace>Quobject.EngineIo</RootNamespace>
+    <RootNamespace>EngineIo</RootNamespace>
     <AssemblyName>EngineIo</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
-    <PackageReference Include="WebSocket4Net" Version="0.15.0-beta9" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -225,8 +225,9 @@ namespace EngineIo.Client.Transports
                 // var log = LogManager.GetLogger(Global.CallerName());
                 // log.Info("writing close packet");
 
-                var packets = ImmutableList<Packet>.Empty;
-                packets = packets.Add(new Packet(Packet.CLOSE));
+                var packets = ImmutableList<Packet>.Empty
+                    .Add(new Packet(Packet.CLOSE));
+
                 _polling.Write(packets);
             }
 
@@ -277,7 +278,7 @@ namespace EngineIo.Client.Transports
             }
         }
 
-        protected override void Write(ImmutableList<Packet> packets)
+        protected override void Write(IList<Packet> packets)
         {
             var log = LogManager.GetLogger(Global.CallerName());
             log.Info("Write packets.Count = " + packets.Count);

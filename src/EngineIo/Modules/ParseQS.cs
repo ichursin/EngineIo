@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -18,32 +17,10 @@ namespace EngineIo.Modules
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string Encode(ImmutableDictionary<string, string> obj)
+        public static string Encode(IDictionary<string, string> obj)
         {
             var sb = new StringBuilder();
             foreach (var key in obj.Keys.OrderBy(x => x))
-            {
-                if (sb.Length > 0)
-                {
-                    sb.Append("&");
-                }
-                sb.Append(Global.EncodeURIComponent(key));
-                sb.Append("=");
-                sb.Append(Global.EncodeURIComponent(obj[key]));
-            }
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Compiles a querystring
-        /// Returns string representation of the object
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        internal static string Encode(IDictionary<string, string> obj)
-        {
-            var sb = new StringBuilder();
-            foreach (var key in obj.Keys)
             {
                 if (sb.Length > 0)
                 {
