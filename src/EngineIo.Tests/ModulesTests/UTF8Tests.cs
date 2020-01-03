@@ -58,7 +58,7 @@ namespace EngineIo.Tests.ModulesTests
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Should configure server side")]
         public void ShouldCorrectDecode()
         {
             foreach (var data in DATA)

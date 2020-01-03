@@ -9,7 +9,7 @@ namespace EngineIo.Tests.ClientTests
     {
         private ManualResetEvent _manualResetEvent = null;
 
-        [Fact]
+        [Fact(Skip = "Should configure server side")]
         public void ReceiveBinaryData()
         {
             _manualResetEvent = new ManualResetEvent(false);
@@ -65,7 +65,7 @@ namespace EngineIo.Tests.ClientTests
             Assert.Equal(binaryData, result);
         }
 
-        [Fact]
+        [Fact(Skip = "Should configure server side")]
         public void ReceiveBinaryDataAndMultibyteUTF8String()
         {
             _manualResetEvent = new ManualResetEvent(false);

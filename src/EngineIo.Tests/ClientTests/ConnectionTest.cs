@@ -14,7 +14,7 @@ namespace EngineIo.Tests.ClientTests
         private Socket socket;
         public string Message;
 
-        [Fact]
+        [Fact(Skip = "Should configure server side")]
         public void ConnectToLocalhost()
         {
             _manualResetEvent = new ManualResetEvent(false);
@@ -69,7 +69,7 @@ namespace EngineIo.Tests.ClientTests
                 => Id.CompareTo(other.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Should configure server side")]
         public void ConnectToLocalhost2()
         {
             _manualResetEvent = new ManualResetEvent(false);
@@ -100,7 +100,7 @@ namespace EngineIo.Tests.ClientTests
             Assert.Equal("hi", Message);
         }
 
-        [Fact]
+        [Fact(Skip = "Should configure server side")]
         public void TestmultibyteUtf8StringsWithPolling()
         {
             _manualResetEvent = new ManualResetEvent(false);
@@ -136,7 +136,7 @@ namespace EngineIo.Tests.ClientTests
             Assert.Equal(SendMessage, Message);
         }
 
-        [Fact]
+        [Fact(Skip = "Should configure server side")]
         public void Testemoji()
         {
             _manualResetEvent = new ManualResetEvent(false);
