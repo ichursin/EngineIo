@@ -91,7 +91,7 @@ namespace EngineIo.Client.Transports
                 CookieHeaderValue = Cookie
             };
 
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("DoWrite data = " + data);
 
             // try
@@ -153,7 +153,7 @@ namespace EngineIo.Client.Transports
 
         protected override void DoPoll()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("xhr poll");
             var opts = new XHRRequest.RequestOptions { CookieHeaderValue = Cookie };
             sendXhr = Request(opts);
@@ -299,7 +299,6 @@ namespace EngineIo.Client.Transports
                     {
                         OnError(e);
                     }
-
                 }).Wait();
             }
 
@@ -310,7 +309,7 @@ namespace EngineIo.Client.Transports
 
             private void OnData(string data)
             {
-                // var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger();
                 // log.Info("OnData string = " + data);
 
                 Emit(EVENT_DATA, data);
@@ -319,7 +318,7 @@ namespace EngineIo.Client.Transports
 
             private void OnData(byte[] data)
             {
-                // var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger();
                 // log.Info(string.Format("OnData byte[] ={0}", System.Text.Encoding.UTF8.GetString(data, 0, data.Length)));
 
                 Emit(EVENT_DATA, data);

@@ -10,17 +10,16 @@ namespace EngineIo.Modules
     /// </remarks>
     public class UTF8
     {
-        private static List<int> byteArray;
+        private static IList<int> byteArray;
         private static int byteCount;
         private static int byteIndex;
 
         public static string Encode(string str)
         {
-            List<int> codePoints = Ucs2Decode(str);
-            var length = codePoints.Count;
+            var codePoints = Ucs2Decode(str);
             var index = -1;
             var byteString = new StringBuilder();
-            while (++index < length)
+            while (++index < codePoints.Count)
             {
                 var codePoint = codePoints[index];
                 byteString.Append(EncodeCodePoint(codePoint));
@@ -158,8 +157,10 @@ namespace EngineIo.Modules
                 sb.Append(CreateByte(codePoint, 12));
                 sb.Append(CreateByte(codePoint, 6));
             }
-            sb.Append((char)((codePoint & 0x3F) | 0x80));
-            return sb.ToString();
+
+            return sb
+                .Append((char)((codePoint & 0x3F) | 0x80))
+                .ToString();
         }
 
         private static char CreateByte(int codePoint, int shift)
@@ -167,17 +168,15 @@ namespace EngineIo.Modules
             return (char)(((codePoint >> shift) & 0x3F) | 0x80);
         }
 
-        private static List<int> Ucs2Decode(string str)
+        private static IList<int> Ucs2Decode(string str)
         {
             var output = new List<int>();
-            var counter = 0;
-            var length = str.Length;
 
-            while (counter < length)
+            var counter = 0;
+            while (counter < str.Length)
             {
                 var value = (int)str[counter++];
-
-                if (value >= 0xD800 && value <= 0xDBFF && counter < length)
+                if (value >= 0xD800 && value <= 0xDBFF && counter < str.Length)
                 {
                     // high surrogate, and there is a next character
                     var extra = (int)str[counter++];
@@ -204,7 +203,8 @@ namespace EngineIo.Modules
 
         private static string Ucs2Encode(List<int> array)
         {
-            var sb = new StringBuilder();
+            var output = new StringBuilder();
+
             var index = -1;
             while (++index < array.Count)
             {
@@ -212,12 +212,13 @@ namespace EngineIo.Modules
                 if (value > 0xFFFF)
                 {
                     value -= 0x10000;
-                    sb.Append((char)(((int)((uint)value >> 10)) & 0x3FF | 0xD800));
+                    output.Append((char)(((int)((uint)value >> 10)) & 0x3FF | 0xD800));
                     value = 0xDC00 | value & 0x3FF;
                 }
-                sb.Append((char)value);
+                output.Append((char)value);
             }
-            return sb.ToString();
+
+            return output.ToString();
         }
     }
 }

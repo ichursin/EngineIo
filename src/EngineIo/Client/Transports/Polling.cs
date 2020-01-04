@@ -30,7 +30,7 @@ namespace EngineIo.Client.Transports
 
         public void Pause(Action onPause)
         {
-            //var log = LogManager.GetLogger(Global.CallerName());
+            //var log = LogManager.GetLogger();
 
             ReadyState = ReadyStateEnum.PAUSED;
             Action pause = () =>
@@ -89,7 +89,7 @@ namespace EngineIo.Client.Transports
             }
             public void Call(params object[] args)
             {
-                // var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger();
                 // log.Info("pre-pause writing complete");
 
                 if (--_total[0] == 0)
@@ -117,7 +117,7 @@ namespace EngineIo.Client.Transports
 
             public void Call(params object[] args)
             {
-                // var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger();
                 // log.Info("pre-pause polling complete");
 
                 if (--_total[0] == 0)
@@ -132,7 +132,7 @@ namespace EngineIo.Client.Transports
 
         private void Poll()
         {
-            // var log = LogManager.GetLogger(Global.CallerName());
+            // var log = LogManager.GetLogger();
             // log.Info("polling");
 
             IsPolling = true;
@@ -179,7 +179,7 @@ namespace EngineIo.Client.Transports
 
         private void _onData(object data)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
             log.Info(string.Format("polling got data {0}", data));
             var callback = new DecodePayloadCallback(this);
@@ -222,7 +222,7 @@ namespace EngineIo.Client.Transports
 
             public void Call(params object[] args)
             {
-                // var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger();
                 // log.Info("writing close packet");
 
                 var packets = ImmutableList<Packet>.Empty
@@ -237,7 +237,7 @@ namespace EngineIo.Client.Transports
 
         protected override void DoClose()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
             var closeListener = new CloseListener(this);
 
@@ -266,7 +266,7 @@ namespace EngineIo.Client.Transports
 
             public void Call(object data)
             {
-                // var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger();
                 // log.Info("SendEncodeCallback data = " + data);
 
                 var byteData = (byte[])data;
@@ -280,7 +280,7 @@ namespace EngineIo.Client.Transports
 
         protected override void Write(IList<Packet> packets)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("Write packets.Count = " + packets.Count);
 
             Writable = false;

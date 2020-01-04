@@ -190,7 +190,7 @@ namespace EngineIo.Client
             //            EventTasks.Exec((n) =>
             Task.Run(() =>
             {
-                var log2 = LogManager.GetLogger(Global.CallerName());
+                var log2 = LogManager.GetLogger();
                 log2.Info("Task.Run Open start");
                 transport.Open();
                 log2.Info("Task.Run Open finish");
@@ -242,7 +242,7 @@ namespace EngineIo.Client
 
         private void SetTransport(Transport transport)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info($"SetTransport setting transport '{transport.Name}'");
 
             if (Transport != null)
@@ -377,7 +377,7 @@ namespace EngineIo.Client
 
         internal void OnDrain()
         {
-            //var log = LogManager.GetLogger(Global.CallerName());
+            //var log = LogManager.GetLogger();
             //log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             for (int i = 0; i < PrevBufferLen; i++)
@@ -427,7 +427,7 @@ namespace EngineIo.Client
 
         private bool Flush()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
             log.Info(string.Format("ReadyState={0} Transport.Writeable={1} Upgrading={2} WriteBuffer.Count={3}", ReadyState, Transport.Writable, Upgrading, WriteBuffer.Count));
             if (ReadyState != ReadyStateEnum.CLOSED && Transport.Writable && !Upgrading && WriteBuffer.Count != 0)
@@ -447,7 +447,7 @@ namespace EngineIo.Client
 
         public void OnPacket(Packet packet)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
 
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
@@ -489,7 +489,7 @@ namespace EngineIo.Client
 
         private void OnHandshake(HandshakeData handshakeData)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info(nameof(OnHandshake));
             Emit(EVENT_HANDSHAKE, handshakeData);
             Id = handshakeData.Sid;
@@ -534,18 +534,18 @@ namespace EngineIo.Client
 
         private void SetPing()
         {
-            //var log = LogManager.GetLogger(Global.CallerName());
+            //var log = LogManager.GetLogger();
 
             if (PingIntervalTimer != null)
             {
                 PingIntervalTimer.Stop();
             }
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
 
             PingIntervalTimer = EasyTimer.SetTimeout(() =>
             {
-                var log2 = LogManager.GetLogger(Global.CallerName());
+                var log2 = LogManager.GetLogger();
                 log2.Info("EasyTimer SetPing start");
 
                 if (Upgrading)
@@ -626,7 +626,7 @@ namespace EngineIo.Client
             }
 
             Emit(EVENT_PACKET_CREATE, packet);
-            //var log = LogManager.GetLogger(Global.CallerName());
+            //var log = LogManager.GetLogger();
             //log.Info(string.Format("SendPacket WriteBuffer.Add(packet) packet ={0}",packet.Type));
             WriteBuffer = WriteBuffer.Add(packet);
             CallbackBuffer = CallbackBuffer.Add(fn);
@@ -635,7 +635,7 @@ namespace EngineIo.Client
 
         private Task WaitForUpgrade()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
             var tcs = new TaskCompletionSource<object>();
             const int TIMEOUT = 1000;
@@ -664,7 +664,7 @@ namespace EngineIo.Client
 
         private void OnOpen()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
             //log.Info("socket open before call to flush()");
             ReadyState = ReadyStateEnum.OPEN;
@@ -687,7 +687,7 @@ namespace EngineIo.Client
 
         private void Probe(string name)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
             log.Info(string.Format("Probe probing transport '{0}'", name));
 
@@ -788,7 +788,7 @@ namespace EngineIo.Client
                     {
                         return;
                     }
-                    var log = LogManager.GetLogger(Global.CallerName());
+                    var log = LogManager.GetLogger();
 
                     var msg = (Packet)args[0];
                     if (Packet.PONG == msg.Type && "probe" == (string)msg.Data)
@@ -941,7 +941,7 @@ namespace EngineIo.Client
 
                 _freezeTransport.Call();
 
-                var log = LogManager.GetLogger(Global.CallerName());
+                var log = LogManager.GetLogger();
 
                 log.Info(string.Format("probe transport \"{0}\" failed because of error: {1}", error.Transport, err));
                 _socket.Emit(EVENT_UPGRADE_ERROR, error);
@@ -1009,7 +1009,7 @@ namespace EngineIo.Client
                 var to = (Transport)args[0];
                 if (_transport[0] != null && to.Name != _transport[0].Name)
                 {
-                    var log = LogManager.GetLogger(Global.CallerName());
+                    var log = LogManager.GetLogger();
 
                     log.Info(string.Format("'{0}' works - aborting '{1}'", to.Name, _transport[0].Name));
                     _freezeTransport.Call();
@@ -1024,7 +1024,7 @@ namespace EngineIo.Client
         {
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
-                var log = LogManager.GetLogger(Global.CallerName());
+                var log = LogManager.GetLogger();
                 log.Info("Start");
                 OnClose("forced close");
 
@@ -1039,7 +1039,7 @@ namespace EngineIo.Client
         {
             if (ReadyState == ReadyStateEnum.OPENING || ReadyState == ReadyStateEnum.OPEN)
             {
-                var log = LogManager.GetLogger(Global.CallerName());
+                var log = LogManager.GetLogger();
 
                 log.Info(string.Format("OnClose socket close with reason: {0}", reason));
 
@@ -1119,7 +1119,7 @@ namespace EngineIo.Client
 
             PingTimeoutTimer = EasyTimer.SetTimeout(() =>
             {
-                var log2 = LogManager.GetLogger(Global.CallerName());
+                var log2 = LogManager.GetLogger();
                 log2.Info("EasyTimer OnHeartbeat start");
                 if (ReadyState == ReadyStateEnum.CLOSED)
                 {
@@ -1136,7 +1136,7 @@ namespace EngineIo.Client
 
         internal void OnError(Exception exception)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
 
             log.Error("socket error", exception);
             PriorWebsocketSuccess = false;

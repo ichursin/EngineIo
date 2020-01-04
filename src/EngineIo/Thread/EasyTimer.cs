@@ -36,7 +36,7 @@ namespace EngineIo.Thread
 
         public void Stop()
         {
-            // var log = LogManager.GetLogger(Global.CallerName());
+            // var log = LogManager.GetLogger();
             // log.Info("EasyTimer stop");
             _ts?.Cancel();
         }

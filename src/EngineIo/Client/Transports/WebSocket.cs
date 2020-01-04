@@ -34,7 +34,7 @@ namespace EngineIo.Client.Transports
 
         protected override void DoOpen()
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("DoOpen uri =" + Uri());
 
             ws = new WebSocket4Net.WebSocket(Uri(), "", Cookies, MyExtraHeaders)
@@ -64,7 +64,7 @@ namespace EngineIo.Client.Transports
 
         void ws_DataReceived(object sender, DataReceivedEventArgs e)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("ws_DataReceived " + e.Data);
 
             OnData(e.Data);
@@ -72,7 +72,7 @@ namespace EngineIo.Client.Transports
 
         private void ws_Opened(object sender, EventArgs e)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("ws_Opened " + ws.SupportBinary);
 
             OnOpen();
@@ -80,7 +80,7 @@ namespace EngineIo.Client.Transports
 
         void ws_Closed(object sender, EventArgs e)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("ws_Closed");
 
             ws.Opened -= ws_Opened;
@@ -94,7 +94,7 @@ namespace EngineIo.Client.Transports
 
         void ws_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("ws_MessageReceived e.Message= " + e.Message);
 
             OnData(e.Message);
@@ -134,7 +134,7 @@ namespace EngineIo.Client.Transports
 
             public void Call(object data)
             {
-                // var log = LogManager.GetLogger(Global.CallerName());
+                // var log = LogManager.GetLogger();
 
                 if (data is string message)
                 {
@@ -168,7 +168,7 @@ namespace EngineIo.Client.Transports
                 }
                 catch (Exception e)
                 {
-                    var log = LogManager.GetLogger(Global.CallerName());
+                    var log = LogManager.GetLogger();
                     log.Info("DoClose ws.Close() Exception= " + e.Message);
                 }
             }

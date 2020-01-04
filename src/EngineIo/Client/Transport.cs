@@ -38,7 +38,7 @@ namespace EngineIo.Client
 
             set
             {
-                var log = LogManager.GetLogger(Global.CallerName());
+                var log = LogManager.GetLogger();
                 log.Info(string.Format("Writable: {0} sid={1}", value, Socket.Id));
                 _writeable = value;
             }
@@ -143,7 +143,7 @@ namespace EngineIo.Client
 
         public Transport Send(ImmutableList<Packet> packets)
         {
-            var log = LogManager.GetLogger(Global.CallerName());
+            var log = LogManager.GetLogger();
             log.Info("Send called with packets.Count: " + packets.Count);
             var count = packets.Count;
             if (ReadyState == ReadyStateEnum.OPEN)
@@ -160,8 +160,6 @@ namespace EngineIo.Client
             }
             return this;
         }
-
-
 
         protected abstract void DoOpen();
 

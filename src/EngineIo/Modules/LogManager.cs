@@ -1,22 +1,35 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace EngineIo.Modules
 {
     public class LogManager
     {
         private const string myFileName = "XunitTrace.txt";
-        private readonly string MyType;
-        private static readonly LogManager EmptyLogger = new LogManager(null);
 
-        private static System.IO.StreamWriter file;
+        private static readonly LogManager EmptyLogger = new LogManager(null);
+        private static readonly Regex _invalidCharacters = new Regex("([\ud800-\udbff](?![\udc00-\udfff]))|((?<![\ud800-\udbff])[\udc00-\udfff])", RegexOptions.Compiled);
+
+        private static StreamWriter file;
 
         public static bool Enabled;
+
+        private readonly string MyType;
 
         #region Statics
 
         public static void SetupLogManager()
         {
+        }
+
+        public static LogManager GetLogger()
+        {
+            return GetLogger(GetCallerName());
         }
 
         public static LogManager GetLogger(string type)
@@ -30,7 +43,7 @@ namespace EngineIo.Modules
             return GetLogger(type.ToString());
         }
 
-        public static LogManager GetLogger(System.Reflection.MethodBase methodBase)
+        public static LogManager GetLogger(MethodBase methodBase)
         {
 #if DEBUG
             var type = methodBase.DeclaringType == null ? "" : methodBase.DeclaringType.ToString();
@@ -39,6 +52,38 @@ namespace EngineIo.Modules
 #else
             return EmptyLogger;
 #endif
+        }
+
+        private static string GetCallerName([CallerMemberName]string caller = "", [CallerLineNumber]int number = 0, [CallerFilePath]string path = "")
+        {
+            var fileName = path.Split('\\')
+                .LastOrDefault();
+
+            if (path.Contains("SocketIo.Tests"))
+            {
+                path = "SocketIo.Tests";
+            }
+            else if (path.Contains("SocketIo"))
+            {
+                path = "SocketIo";
+            }
+            else if (path.Contains("EngineIo.Tests"))
+            {
+                path = "EngineIo.Tests";
+            }
+            else if (path.Contains("EngineIo"))
+            {
+                path = "EngineIo";
+            }
+
+            return $"{path}-{fileName}:{caller}#{number}";
+        }
+
+
+        // from http://stackoverflow.com/questions/8767103/how-to-remove-invalid-code-points-from-a-string
+        private static string StripInvalidUnicodeCharacters(string str)
+        {
+            return _invalidCharacters.Replace(str, "");
         }
 
         #endregion
@@ -57,19 +102,19 @@ namespace EngineIo.Modules
                 return;
             }
 
-            if (LogManager.file == null)
+            if (file == null)
             {
-                var logFile = System.IO.File.Create(myFileName);
-                file = new System.IO.StreamWriter(logFile)
+                var logFile = File.Create(myFileName);
+                file = new StreamWriter(logFile)
                 {
                     AutoFlush = true
                 };
             }
 
-            msg = Global.StripInvalidUnicodeCharacters(msg);
+            msg = StripInvalidUnicodeCharacters(msg);
             var msg1 = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")} [{""}] {MyType} - {msg}";
             //            System.Threading.Thread.CurrentThread.ManagedThreadId);
-            LogManager.file.WriteLine(msg1);
+            file.WriteLine(msg1);
         }
 
         [Conditional("DEBUG")]

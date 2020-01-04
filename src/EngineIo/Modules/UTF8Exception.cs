@@ -13,8 +13,8 @@ namespace EngineIo.Modules
         {
         }
 
-        public UTF8Exception(string message, Exception innerException)
-            : base(message, innerException)
+        public UTF8Exception(string message, Exception inner)
+            : base(message, inner)
         {
         }
     }

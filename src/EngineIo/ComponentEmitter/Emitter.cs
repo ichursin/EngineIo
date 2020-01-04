@@ -27,7 +27,7 @@ namespace EngineIo.ComponentEmitter
         /// <returns>a reference to this object.</returns>
         public virtual Emitter Emit(string eventString, params object[] args)
         {
-            // var log = LogManager.GetLogger(Global.CallerName());
+            // var log = LogManager.GetLogger();
             // log.Info("Emitter emit event = " + eventString);
             if (_callbacks.ContainsKey(eventString))
             {
@@ -139,7 +139,7 @@ namespace EngineIo.ComponentEmitter
             {
                 if (!_callbacks.TryGetValue(eventString, out IImmutableList<IListener> retrievedValue))
                 {
-                    var log = LogManager.GetLogger(Global.CallerName());
+                    var log = LogManager.GetLogger();
                     log.Info(string.Format("Emitter.Off Could not remove {0}", eventString));
                 }
 
