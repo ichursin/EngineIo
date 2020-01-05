@@ -27,15 +27,9 @@ namespace EngineIo.Modules
         {
         }
 
-        public static LogManager GetLogger()
+        public static LogManager GetLogger(string type = default)
         {
-            return GetLogger(GetCallerName());
-        }
-
-        public static LogManager GetLogger(string type)
-        {
-            var result = new LogManager(type);
-            return result;
+            return new LogManager(type ?? GetCallerName());
         }
 
         public static LogManager GetLogger(Type type)
@@ -79,13 +73,6 @@ namespace EngineIo.Modules
             return $"{path}-{fileName}:{caller}#{number}";
         }
 
-
-        // from http://stackoverflow.com/questions/8767103/how-to-remove-invalid-code-points-from-a-string
-        private static string StripInvalidUnicodeCharacters(string str)
-        {
-            return _invalidCharacters.Replace(str, "");
-        }
-
         #endregion
 
         public LogManager(string type)
@@ -96,7 +83,7 @@ namespace EngineIo.Modules
         [Conditional("DEBUG")]
         public void Info(string msg)
         {
-            //Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
+            // Trace.WriteLine(string.Format("{0} [{3}] {1} - {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"), MyType, msg, System.Threading.Thread.CurrentThread.ManagedThreadId));
             if (!Enabled)
             {
                 return;
@@ -111,10 +98,9 @@ namespace EngineIo.Modules
                 };
             }
 
-            msg = StripInvalidUnicodeCharacters(msg);
-            var msg1 = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")} [{""}] {MyType} - {msg}";
-            //            System.Threading.Thread.CurrentThread.ManagedThreadId);
-            file.WriteLine(msg1);
+            // http://stackoverflow.com/questions/8767103/how-to-remove-invalid-code-points-from-a-string
+            // System.Threading.Thread.CurrentThread.ManagedThreadId);
+            file.WriteLine($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")} [{""}] {MyType} - {_invalidCharacters.Replace(msg, "")}");
         }
 
         [Conditional("DEBUG")]

@@ -12,6 +12,7 @@
     <FileVersion>1.0.2.0</FileVersion>
     <RootNamespace>EngineIo</RootNamespace>
     <AssemblyName>EngineIo</AssemblyName>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

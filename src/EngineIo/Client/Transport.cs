@@ -195,7 +195,7 @@ namespace EngineIo.Client
                     {
                         result.Append("; ");
                     }
-                    result.Append(string.Format("{0}={1}", item.Key, item.Value));
+                    result.AppendFormat("{0}={1}", item.Key, item.Value);
                     first = false;
                 }
 

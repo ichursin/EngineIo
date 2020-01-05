@@ -30,9 +30,7 @@ namespace EngineIo.Tests.ModulesTests
         [Fact]
         public void Encode()
         {
-            Dictionary<string, string> obj;
-
-            obj = new Dictionary<string, string> { { "a", "b" } };
+            var obj = new Dictionary<string, string> { { "a", "b" } };
             var imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal("a=b", ParseQS.Encode(imObj));
 
@@ -44,7 +42,5 @@ namespace EngineIo.Tests.ModulesTests
             imObj = ImmutableDictionary.Create<string, string>().AddRange(obj);
             Assert.Equal("a=b&c=tobi%20rocks", ParseQS.Encode(imObj));
         }
-
-
     }
 }

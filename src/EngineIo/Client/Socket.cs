@@ -57,7 +57,7 @@ namespace EngineIo.Client
         private string Path;
         private string TimestampParam;
         private IList<string> Transports;
-        private ImmutableList<string> Upgrades;
+        private IList<string> Upgrades;
         private IDictionary<string, string> Query;
         private ImmutableList<Packet> WriteBuffer = ImmutableList<Packet>.Empty;
         private ImmutableList<Action> CallbackBuffer = ImmutableList<Action>.Empty;
@@ -370,25 +370,19 @@ namespace EngineIo.Client
 
                 return opts;
             }
-
-
         }
 
 
         internal void OnDrain()
         {
-            //var log = LogManager.GetLogger();
-            //log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
+            // var log = LogManager.GetLogger();
+            // log.Info(string.Format("OnDrain1 PrevBufferLen={0} WriteBuffer.Count={1}", PrevBufferLen, WriteBuffer.Count));
 
             for (int i = 0; i < PrevBufferLen; i++)
             {
                 try
                 {
-                    var callback = CallbackBuffer[i];
-                    if (callback != null)
-                    {
-                        callback();
-                    }
+                    CallbackBuffer[i]?.Invoke();
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -1089,7 +1083,7 @@ namespace EngineIo.Client
             }
         }
 
-        public ImmutableList<string> FilterUpgrades(IEnumerable<string> upgrades)
+        public IList<string> FilterUpgrades(IEnumerable<string> upgrades)
         {
             var filterUpgrades = ImmutableList<string>.Empty;
             foreach (var upgrade in upgrades)

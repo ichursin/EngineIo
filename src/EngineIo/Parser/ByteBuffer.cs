@@ -3,10 +3,11 @@ using System.IO;
 
 namespace EngineIo.Parser
 {
-    public class ByteBuffer
+    public class ByteBuffer : IDisposable
     {
         private readonly MemoryStream _memoryStream;
 
+        private bool _isDisposed = false;
         private long _limit = 0;
 
         public ByteBuffer(int length)
@@ -134,6 +135,27 @@ namespace EngineIo.Parser
         {
             Position(0);
             Limit(Capacity);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed && disposing)
+            {
+                _memoryStream.Dispose();
+            }
+
+            _isDisposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~ByteBuffer()
+        {
+            Dispose(disposing: false);
         }
     }
 }

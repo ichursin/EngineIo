@@ -342,11 +342,11 @@ namespace EngineIo.Client.Transports
 
             public class RequestOptions
             {
-                public string Uri;
-                public string Method;
-                public byte[] Data;
-                public string CookieHeaderValue;
-                public Dictionary<string, string> ExtraHeaders;
+                public string Uri { get; set; }
+                public string Method { get; set; }
+                public byte[] Data { get; set; }
+                public string CookieHeaderValue { get; set; }
+                public IDictionary<string, string> ExtraHeaders { get; set; }
             }
         }
     }

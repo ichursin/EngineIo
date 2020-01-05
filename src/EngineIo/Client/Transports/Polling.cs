@@ -180,8 +180,8 @@ namespace EngineIo.Client.Transports
         private void _onData(object data)
         {
             var log = LogManager.GetLogger();
+            log.Info($"polling got data {data}");
 
-            log.Info(string.Format("polling got data {0}", data));
             var callback = new DecodePayloadCallback(this);
             if (data is string)
             {
@@ -291,12 +291,12 @@ namespace EngineIo.Client.Transports
 
         public string Uri()
         {
-            //var query = Query;
+            // var query = Query;
             var query = new Dictionary<string, string>(Query);
-            //if (Query == null)
-            //{
-            //    query = new Dictionary<string, string>();
-            //}
+            // if (Query == null)
+            // {
+            //     query = new Dictionary<string, string>();
+            // }
             string schema = IsSecure ? "https" : "http";
             string portString = "";
 
