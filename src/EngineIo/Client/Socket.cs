@@ -229,15 +229,12 @@ namespace EngineIo.Client
                 ExtraHeaders = ExtraHeaders
             };
 
-            switch (name)
+            return name switch
             {
-                case WebSocket.NAME:
-                    return new WebSocket(options);
-                case Polling.NAME:
-                    return new PollingXHR(options);
-                default:
-                    throw new EngineIOException("CreateTransport failed");
-            }
+                WebSocket.NAME => new WebSocket(options),
+                Polling.NAME => new PollingXHR(options),
+                _ => throw new EngineIoException("CreateTransport failed"),
+            };
         }
 
         private void SetTransport(Transport transport)
@@ -462,7 +459,7 @@ namespace EngineIo.Client
                 }
                 else if (packet.Type == Packet.ERROR)
                 {
-                    var err = new EngineIOException("server error")
+                    var err = new EngineIoException("server error")
                     {
                         code = packet.Data
                     };
@@ -501,7 +498,6 @@ namespace EngineIo.Client
 
             Off(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
             On(EVENT_HEARTBEAT, new OnHeartbeatAsListener(this));
-
         }
 
         private class OnHeartbeatAsListener : IListener
@@ -528,13 +524,9 @@ namespace EngineIo.Client
 
         private void SetPing()
         {
-            //var log = LogManager.GetLogger();
-
-            if (PingIntervalTimer != null)
-            {
-                PingIntervalTimer.Stop();
-            }
             var log = LogManager.GetLogger();
+
+            PingIntervalTimer?.Stop();
             log.Info(string.Format("writing ping packet - expecting pong within {0}ms", PingTimeout));
 
             PingIntervalTimer = EasyTimer.SetTimeout(() =>
@@ -559,7 +551,7 @@ namespace EngineIo.Client
 
         private void Ping()
         {
-            //Send("primus::ping::" + GetJavaTime());
+            // Send("primus::ping::" + GetJavaTime());
             SendPacket(Packet.PING);
         }
 
@@ -682,8 +674,7 @@ namespace EngineIo.Client
         private void Probe(string name)
         {
             var log = LogManager.GetLogger();
-
-            log.Info(string.Format("Probe probing transport '{0}'", name));
+            log.Info($"Probe probing transport '{name}'");
 
             PriorWebsocketSuccess = false;
 
@@ -736,9 +727,9 @@ namespace EngineIo.Client
 
         private class ProbeParameters
         {
-            public ImmutableList<Transport> Transport { get; set; }
-            public ImmutableList<bool> Failed { get; set; }
-            public ImmutableList<Action> Cleanup { get; set; }
+            public IImmutableList<Transport> Transport { get; set; }
+            public IImmutableList<bool> Failed { get; set; }
+            public IImmutableList<Action> Cleanup { get; set; }
             public Socket Socket { get; set; }
         }
 
@@ -851,7 +842,7 @@ namespace EngineIo.Client
                         log.Info(string.Format("probe transport '{0}' failed",
                             _onTransportOpenListener.Parameters.Transport[0].Name));
 
-                        var err = new EngineIOException("probe error");
+                        var err = new EngineIoException("probe error");
                         _onTransportOpenListener.Parameters.Socket.Emit(EVENT_UPGRADE_ERROR, err);
                     }
 
@@ -903,12 +894,12 @@ namespace EngineIo.Client
         private class ProbingOnErrorListener : IListener
         {
             private readonly Socket _socket;
-            private readonly ImmutableList<Transport> _transport;
+            private readonly IImmutableList<Transport> _transport;
             private readonly IListener _freezeTransport;
 
             public int Id { get; } = 0;
 
-            public ProbingOnErrorListener(Socket socket, ImmutableList<Transport> transport, IListener freezeTransport)
+            public ProbingOnErrorListener(Socket socket, IImmutableList<Transport> transport, IListener freezeTransport)
             {
                 _socket = socket;
                 _transport = transport;
@@ -918,18 +909,18 @@ namespace EngineIo.Client
             void IListener.Call(params object[] args)
             {
                 var err = args[0];
-                EngineIOException error;
+                EngineIoException error;
                 if (err is Exception)
                 {
-                    error = new EngineIOException("probe error", (Exception)err);
+                    error = new EngineIoException("probe error", (Exception)err);
                 }
                 else if (err is string)
                 {
-                    error = new EngineIOException("probe error: " + (string)err);
+                    error = new EngineIoException("probe error: " + (string)err);
                 }
                 else
                 {
-                    error = new EngineIOException("probe error");
+                    error = new EngineIoException("probe error");
                 }
                 error.Transport = _transport[0].Name;
 
@@ -988,11 +979,11 @@ namespace EngineIo.Client
         private class ProbingOnUpgradeListener : IListener
         {
             private readonly IListener _freezeTransport;
-            private readonly ImmutableList<Transport> _transport;
+            private readonly IImmutableList<Transport> _transport;
 
             public int Id { get; } = 0;
 
-            public ProbingOnUpgradeListener(FreezeTransportListener freezeTransport, ImmutableList<Transport> transport)
+            public ProbingOnUpgradeListener(FreezeTransportListener freezeTransport, IImmutableList<Transport> transport)
             {
                 _freezeTransport = freezeTransport;
                 _transport = transport;

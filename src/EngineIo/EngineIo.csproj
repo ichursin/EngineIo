@@ -1,28 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Description>This is the Engine.IO Client Library for C#.</Description>
-    <PackageProjectUrl>https://github.com/ichursin/EngineIo/</PackageProjectUrl>
-    <Version>1.0.2-beta1</Version>
-    <Copyright>Copyright ©  2017</Copyright>
-    <RepositoryUrl>https://github.com/ichursin/EngineIo/</RepositoryUrl>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>EngineIo</RootNamespace>
     <AssemblyName>EngineIo</AssemblyName>
     <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageProjectUrl>https://github.com/ichursin/EngineIo/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ichursin/EngineIo/</RepositoryUrl>
+    <Copyright>Copyright © 2019</Copyright>
+    <Description>This is the Engine.IO Client Library for C#.</Description>
+    <Authors>Ilya Chursin;Matthias Ludwig</Authors>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>engine.io</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
     <PackageReference Include="WebSocket4Net" Version="0.15.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

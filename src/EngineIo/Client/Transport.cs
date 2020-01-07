@@ -85,7 +85,7 @@ namespace EngineIo.Client
 
         protected Transport OnError(string message, Exception exception)
         {
-            Exception err = new EngineIOException(message, exception);
+            Exception err = new EngineIoException(message, exception);
             Emit(EVENT_ERROR, err);
             return this;
         }
@@ -155,7 +155,7 @@ namespace EngineIo.Client
             }
             else
             {
-                throw new EngineIOException("Transport not open");
+                throw new EngineIoException("Transport not open");
                 //log.Info("Transport not open");
             }
             return this;

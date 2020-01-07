@@ -2,21 +2,21 @@
 
 namespace EngineIo.Client
 {
-    public class EngineIOException : Exception
+    public class EngineIoException : Exception
     {
         public string Transport;
         public object code;
 
-        public EngineIOException()
+        public EngineIoException()
         {
         }
 
-        public EngineIOException(string message)
+        public EngineIoException(string message)
             : base(message)
         {
         }
 
-        public EngineIOException(string message, Exception innerException)
+        public EngineIoException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

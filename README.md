@@ -7,16 +7,10 @@ This is the EngineIo Client Library for C#, which is ported from the [JavaScript
 
 
 ##### Installation
-Nuget install:
-```
-Install-Package EngineIoClientDotNet
-```
-
-* NuGet Package: [![EngineIoClientDotNet](https://img.shields.io/nuget/v/EngineIoClientDotNet.svg?maxAge=2592000)](https://www.nuget.org/packages/EngineIoClientDotNet/)
-
+In progress
 
 ##### Usage
-EngineIoClientDotNet has a similar api to those of the [JavaScript client](https://github.com/Automattic/engine.io-client).
+EngineIo has a similar api to those of the [JavaScript client](https://github.com/Automattic/engine.io-client).
 
 You can use `Socket` to connect:
 

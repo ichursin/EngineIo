@@ -49,7 +49,7 @@ namespace EngineIo.Parser
             }
         }
 
-        private static readonly Packet _err = new Packet(Packet.ERROR, "parser error");
+        private static readonly Packet _err = new Packet(ERROR, "parser error");
 
         public string Type { get; set; }
         public object Data { get; set; }
@@ -371,23 +371,34 @@ namespace EngineIo.Parser
 
             public void Call(object data)
             {
-                if (data is string)
+                switch(data)
                 {
-                    var packet = (string)data;
-                    var encodingLength = packet.Length.ToString();
-                    var sizeBuffer = new byte[encodingLength.Length + 2];
-                    sizeBuffer[0] = 0; // is a string
-                    for (var i = 0; i < encodingLength.Length; i++)
-                    {
-                        sizeBuffer[i + 1] = byte.Parse(encodingLength.Substring(i, 1));
-                    }
-                    sizeBuffer[sizeBuffer.Length - 1] = byte.MaxValue;
-                    _results.Add(Buffer.Concat(new byte[][] { sizeBuffer, StringToByteArray(packet) }));
-                    return;
+                    case string packet:
+                        Call(packet);
+                        return;
+                    case byte[] packet:
+                        Call(packet);
+                        return;
                 }
+            }
 
-                var packet1 = (byte[])data;
-                var encodingLength1 = packet1.Length.ToString();
+            private void Call(string packet)
+            {
+                var encodingLength = packet.Length.ToString();
+                var sizeBuffer = new byte[encodingLength.Length + 2];
+                sizeBuffer[0] = 0; // is a string
+                for (var i = 0; i < encodingLength.Length; i++)
+                {
+                    sizeBuffer[i + 1] = byte.Parse(encodingLength.Substring(i, 1));
+                }
+                sizeBuffer[sizeBuffer.Length - 1] = byte.MaxValue;
+
+                _results.Add(Buffer.Concat(new byte[][] { sizeBuffer, StringToByteArray(packet) }));
+            }
+
+            private void Call(byte[] packet)
+            {
+                var encodingLength1 = packet.Length.ToString();
                 var sizeBuffer1 = new byte[encodingLength1.Length + 2];
                 sizeBuffer1[0] = (byte)1; // is binary
                 for (var i = 0; i < encodingLength1.Length; i++)
@@ -395,7 +406,7 @@ namespace EngineIo.Parser
                     sizeBuffer1[i + 1] = byte.Parse(encodingLength1.Substring(i, 1));
                 }
                 sizeBuffer1[sizeBuffer1.Length - 1] = (byte)255;
-                _results.Add(Buffer.Concat(new byte[][] { sizeBuffer1, packet1 }));
+                _results.Add(Buffer.Concat(new byte[][] { sizeBuffer1, packet }));
             }
         }
     }
