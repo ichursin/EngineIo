@@ -8,5 +8,9 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
+
+      - name: Make build.cmd executable
+        run: chmod +x ./build.cmd
+
       - name: Run './build.cmd Ci'
         run: ./build.cmd Ci
