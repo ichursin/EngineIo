@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIo", "EngineIo\Engine
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIo.Tests", "EngineIo.Tests\EngineIo.Tests.csproj", "{B21BAF12-47BE-4874-83FB-D9918710BD0A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIo.Build", "..\build\EngineIo.Build.csproj", "{4A4EC2C5-F811-4874-B012-CA526D0E8424}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineIo.Build", "..\EngineIo.Build\EngineIo.Build.csproj", "{4A4EC2C5-F811-4874-B012-CA526D0E8424}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
