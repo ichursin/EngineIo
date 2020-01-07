@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
@@ -18,7 +19,9 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 namespace EngineIo.Build
 {
     [CheckBuildProjectConfigurations]
+    [DotNetVerbosityMapping]
     [UnsetVisualStudioEnvironmentVariables]
+    [GitHubActions("engineio", GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.Push }, InvokedTargets = new[] { nameof(Ci) }, ImportGitHubTokenAs = nameof(GitHubToken))]
     public class Build : NukeBuild
     {
         public static int Main() => Execute<Build>(x => x.Ci);
@@ -34,6 +37,9 @@ namespace EngineIo.Build
 
         [GitVersion]
         private readonly GitVersion GitVersion;
+
+        [Parameter("GitHub Token")]
+        private readonly string GitHubToken;
 
         private AbsolutePath SourceDirectory => RootDirectory / "src";
         private AbsolutePath OutputDirectory => RootDirectory / "output";
