@@ -21,7 +21,6 @@ namespace EngineIo.Build
     [CheckBuildProjectConfigurations]
     [DotNetVerbosityMapping]
     [UnsetVisualStudioEnvironmentVariables]
-    [GitHubActions("engineio", GitHubActionsImage.UbuntuLatest, On = new[] { GitHubActionsTrigger.Push }, InvokedTargets = new[] { nameof(Ci) }, ImportGitHubTokenAs = nameof(GitHubToken))]
     public class Build : NukeBuild
     {
         public static int Main() => Execute<Build>(x => x.Ci);
@@ -42,7 +41,7 @@ namespace EngineIo.Build
         private readonly string GitHubToken;
 
         private AbsolutePath SourceDirectory => RootDirectory / "src";
-        private AbsolutePath OutputDirectory => RootDirectory / "output";
+        private AbsolutePath OutputDirectory => RootDirectory / "output" / "packages";
 
         private string TestProject => Solution.GetProject("EngineIo.Tests");
 

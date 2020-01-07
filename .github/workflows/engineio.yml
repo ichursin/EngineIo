@@ -8,10 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Run './build.sh Ci'
-        run: ./build.sh Ci
-        env:
-            GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run './build.cmd Ci'
+        run: ./build.cmd Ci
       - uses: actions/upload-artifact@v1
         with:
           name: output
