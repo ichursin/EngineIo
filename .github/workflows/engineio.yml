@@ -9,8 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Make build.cmd executable
-        run: chmod +x ./build.cmd
+      - name: Make build.cmd and build.sh executable
+        run: chmod +x build.cmd build.sh
 
       - name: Run './build.cmd Ci'
         run: ./build.cmd Ci
