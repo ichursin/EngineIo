@@ -25,7 +25,7 @@
     <None Include="..\.nuke" LinkBase="config" />
     <None Include="..\global.json" LinkBase="config" Condition="Exists('..\global.json')" />
     <None Include="..\nuget.config" LinkBase="config" Condition="Exists('..\nuget.config')" />
-    <None Include="..\GitVersion.yml" LinkBase="config" Condition="Exists('..\GitVersion.yml')" />
+    <None Include="..\gitversion.yml" LinkBase="config" Condition="Exists('..\gitversion.yml')" />
 
     <None Include="..\.teamcity\settings.kts" LinkBase="ci" Condition="Exists('..\.teamcity\settings.kts')" />
     <None Include="..\.github\workflows\*.yml" LinkBase="ci" />
