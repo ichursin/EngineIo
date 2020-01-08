@@ -8,7 +8,7 @@ namespace EngineIo.Modules
     /// Ported from the JavaScript module.
     /// <see href="https://github.com/mathiasbynens/utf8.js">https://github.com/mathiasbynens/utf8.js</see>
     /// </remarks>
-    public class UTF8
+    public static class UTF8
     {
         private static IList<int> byteArray;
         private static int byteCount;

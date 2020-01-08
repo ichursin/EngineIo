@@ -49,19 +49,18 @@ namespace EngineIo.ComponentEmitter
 
             listeners.Add(action);
             /*
+                if (!_callbacks.ContainsKey(eventString))
+                {
+                    // callbacks[eventString] = ImmutableList<IListener>.Empty;
+                    _callbacks = _callbacks.Add(eventString, ImmutableList<IListener>.Empty);
+                }
 
-                        if (!_callbacks.ContainsKey(eventString))
-                        {
-                            // callbacks[eventString] = ImmutableList<IListener>.Empty;
-                            _callbacks = _callbacks.Add(eventString, ImmutableList<IListener>.Empty);
-                        }
+                var callbacksLocal = _callbacks[eventString];
+                callbacksLocal = callbacksLocal.Add(fn);
+                // callbacks[eventString] = callbacksLocal;
+                _callbacks = _callbacks.Remove(eventString).Add(eventString, callbacksLocal);
 
-                        var callbacksLocal = _callbacks[eventString];
-                        callbacksLocal = callbacksLocal.Add(fn);
-                        // callbacks[eventString] = callbacksLocal;
-                        _callbacks = _callbacks.Remove(eventString).Add(eventString, callbacksLocal);
-
-                        return this;
+                return this;
             */
             return this;
         }
