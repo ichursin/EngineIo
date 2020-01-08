@@ -31,17 +31,13 @@ namespace EngineIo.Build
         [Solution]
         private readonly Solution Solution;
 
-        [GitRepository]
-        private readonly GitRepository GitRepository;
-
-        [GitVersion]
-        private readonly GitVersion GitVersion;
-
         [Parameter("GitHub Token")]
         private readonly string GitHubToken;
 
         private AbsolutePath SourceDirectory => RootDirectory / "src";
-        private AbsolutePath OutputDirectory => RootDirectory / "output" / "packages";
+        private AbsolutePath OutputDirectory => RootDirectory / "output";
+        private AbsolutePath PackagesDirectory => OutputDirectory / "packages";
+        private AbsolutePath TestsDirectory => OutputDirectory / "tests";
 
         private string TestProject => Solution.GetProject("EngineIo.Tests");
 
@@ -85,13 +81,13 @@ namespace EngineIo.Build
                     .EnableNoBuild()
                     .EnableNoRestore()
                     .ResetVerbosity()
-                    .SetResultsDirectory(OutputDirectory)
+                    .SetResultsDirectory(TestsDirectory)
                 );
             });
 
         Target Pack => _ => _
             .DependsOn(Compile)
-            .Produces(OutputDirectory / "*.nupkg")
+            .Produces(PackagesDirectory / "*.nupkg")
             .Executes(() =>
             {
                 DotNetPack(_ => _
@@ -99,8 +95,7 @@ namespace EngineIo.Build
                     .EnableNoRestore()
                     .SetProject(Solution)
                     .SetConfiguration(Configuration)
-                    .SetVersion(GitVersion.NuGetVersionV2)
-                    .SetOutputDirectory(OutputDirectory)
+                    .SetOutputDirectory(PackagesDirectory)
                 );
             });
 

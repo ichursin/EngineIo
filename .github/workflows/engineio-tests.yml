@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
   test:
-    name: Windows Server
-    runs-on: windows-latest
+    name: Linux (Ubuntu)
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
 
