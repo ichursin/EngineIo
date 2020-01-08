@@ -13,4 +13,4 @@ jobs:
         run: chmod +x build.cmd build.sh
 
       - name: Run './build.cmd Ci'
-        run: ./build.cmd Ci
+        run: ./build.cmd Test
