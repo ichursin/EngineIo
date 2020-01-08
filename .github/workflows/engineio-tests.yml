@@ -3,9 +3,9 @@ name: EngineIo Tests
 on: [push]
 
 jobs:
-  ubuntu-latest:
-    name: Linux (Ubuntu)
-    runs-on: ubuntu-latest
+  test:
+    name: Windows Server
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
 
