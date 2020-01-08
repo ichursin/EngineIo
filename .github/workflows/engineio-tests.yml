@@ -1,4 +1,4 @@
-name: engineio
+name: EngineIo Tests
 
 on: [push]
 
